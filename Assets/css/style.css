@@ -1,0 +1,62 @@
+.app-sidebar__user-avatar {
+  width: 48px;
+  background: gray;
+  padding: 6px;
+}
+
+.settings {
+  width: 40px;
+  background: #009688;
+  padding: 3px;
+  margin-top: 6px;
+}
+
+/* html,
+body {
+  background-color: #fff;
+  color: #636b6f;
+  font-family: "Nunito", sans-serif;
+  font-weight: 100;
+  height: 100vh;
+  margin: 0;
+} */
+
+.full-height {
+  height: 60vh;
+}
+
+.flex-center {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.position-ref {
+  position: relative;
+}
+
+.code {
+  border-right: 2px solid;
+  font-size: 26px;
+  padding: 0 15px 0 15px;
+  text-align: center;
+}
+
+.message {
+  font-size: 26px;
+  text-align: center;
+}
+
+.headerRegister{
+  background: #009688;
+  color: #fff;
+}
+
+.headerUpdate{
+  background: #007bff;
+  color: #fff;
+}
+
+.notBlock{
+  display: none;
+}
