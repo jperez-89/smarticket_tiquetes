@@ -17,7 +17,7 @@ class  Login extends Controllers
      public function Login()
      {
           $data['page_title'] = "Supermarket - Iniciar";
-          $data['page_functions'] = "function_login.js";
+          $data['page_functions'] = "js/function_login.js";
           $data['page_name'] = "Supermarket S.A";
           // Hacemos el enlace a la vista
           $this->views->getViews($this, 'Login', $data);

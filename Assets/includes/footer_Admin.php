@@ -25,27 +25,33 @@
 <script type="text/javascript" src="<?php echo media(); ?>DataTables/pdfmake-0.1.36/pdfmake.min.js"></script>
 <script type="text/javascript" src="<?php echo media(); ?>DataTables/pdfmake-0.1.36/vfs_fonts.js"></script>
 
-
-<!-- JS Propios -->
+<!-- JS propios -->
 <?php
-
-switch ($data['page_name']):
-     case 'Productos':
-          echo $data['page_name'];
-          echo '<script type="text/javascript" src="<?php echo media(); ?>js/function_Products.js"></script>';
-          echo "hl";
+switch ($data['page_name']) {
+     case 'Dashboard':
+          echo '<script type="text/javascript" src="' . base . media . $data['page_functions'] . '"></script>';
           break;
-endswitch;
+     case 'Clientes':
+          echo '<script type="text/javascript" src="' . base . media . $data['page_functions'] . '"></script>';
+          break;
+     case 'Productos':
+          echo '<script type="text/javascript" src="' . base . media . $data['page_functions'] . '"></script>';
+          break;
+     case 'Facturas':
+          echo '<script type="text/javascript" src="' . base . media . $data['page_functions'] . '"></script>';
+          break;
+     case 'Usuarios':
+          echo '<script type="text/javascript" src="' . base . media . $data['page_functions'] . '"></script>';
+          break;
+
+     default:
+          # code...
+          break;
+}
+
+
 
 ?>
-<!-- 
-if($data['page_name'] == 'Productos'){
-<script type="text/javascript" src="<?php echo media(); ?>js/function_Products.js"></script>
-}elseif(){
-
-} -->
-<!-- <script type="text/javascript" src="<?php echo media(); ?>js/function_Admin.js"></script> -->
-
 
 </body>
 

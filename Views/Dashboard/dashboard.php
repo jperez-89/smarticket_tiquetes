@@ -50,4 +50,4 @@
      </div>
 </main>
 
-<?= footerAdmin(); ?>
+<?= footerAdmin($data); ?>

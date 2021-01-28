@@ -12,7 +12,9 @@ class  Users extends Controllers
      {
           $data['page_title'] = "Tienda Virtual - Usuarios";
           $data['page_name'] = "Usuarios";
+          $data['page_functions'] = 'js/function_Usuarios.js';
+
           // Hacemos el enlace a la vista
-          $this->views->getViews($this, 'users', $data);
+          $this->views->getViews($this, 'usuarios', $data);
      }
 }

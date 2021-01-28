@@ -44,5 +44,5 @@
 
 <?=
 ShowModal('modalProductos');
-footerAdmin();
+footerAdmin($data);
 ?>

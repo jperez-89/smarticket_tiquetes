@@ -18,6 +18,7 @@ class  Dashboard extends Controllers
      {
           $data['page_title'] = "Tienda Virtual - Dashboard";
           $data['page_name'] = "Dashboard";
+          $data['page_functions'] = 'js/function_Admin.js';
           // Hacemos el enlace a la vista
           $this->views->getViews($this, 'dashboard', $data);
      }

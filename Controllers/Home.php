@@ -11,6 +11,8 @@ class  home extends Controllers
      public function home()
      {
           $data['page_title'] = "Pagina Princial";
+          $data['page_functions'] = 'js/function_Home.js';
+
           // $data['page_name'] = "Home";
           // Hacemos el enlace a la vista
           $this->views->getViews($this, 'home', $data);
