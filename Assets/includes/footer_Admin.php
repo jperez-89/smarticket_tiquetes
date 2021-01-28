@@ -29,13 +29,13 @@
 <!-- JS Propios -->
 <?php
 
-switch ($data['page_name']) {
+switch ($data['page_name']):
      case 'Productos':
           echo $data['page_name'];
           echo '<script type="text/javascript" src="<?php echo media(); ?>js/function_Products.js"></script>';
           echo "hl";
           break;
-}
+endswitch;
 
 ?>
 <!-- 
