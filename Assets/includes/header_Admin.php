@@ -11,6 +11,10 @@
      <meta name="theme-color" content="#009688">
      <link rel="shortcut icon" href="<?= media(); ?>images/favicon2.ico" type="image/x-icon">
      <title><?php echo $data["page_title"] ?></title>
+     <!-- DataTables CSS -->
+     <link rel="stylesheet" type="text/css" href="<?php echo media(); ?>DataTables/datatables.min.css">
+     <link rel="stylesheet" type="text/css" href="<?php echo media(); ?>DataTables/DataTables-1.10.23/css/datatables.bootstrap4.min.css">
+
      <!-- Main CSS-->
      <link rel="stylesheet" type="text/css" href="<?php echo media(); ?>css/main.css">
      <link rel="stylesheet" type="text/css" href="<?php echo media(); ?>css/style.css">

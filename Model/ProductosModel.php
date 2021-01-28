@@ -24,6 +24,13 @@ class ProductosModel extends Crud
           return $resquest;
      }
 
+     public function selectCantProductos()
+     {
+          $sql = "SELECT count(id) as Cantidad FROM productos";
+          $resquest = $this->get_CountRegister($sql);
+          return $resquest;
+     }
+
      public function selectProducto(int $idProducto)
      {
           $this->idProducto = $idProducto;

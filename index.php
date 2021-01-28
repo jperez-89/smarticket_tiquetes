@@ -5,7 +5,7 @@ require_once("Config/Config.php");
 require_once("Helpers/Helpers.php");
 
 // Define la URL principal (raiz) del proyecto o si se hace llamado a un controlador y envio de parametros
-$url = !empty($_GET['url']) ? $_GET['url'] : 'home/home'; // 'dashboard/dashboard'; // 
+$url = !empty($_GET['url']) ? $_GET['url'] : 'dashboard/dashboard'; // 'home/home';
 
 // Crea un arreglo extrayendo los parametros de la URL
 $arrUrl = explode("/", $url);

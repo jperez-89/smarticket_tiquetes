@@ -8,7 +8,7 @@
           </div>
           <ul class="app-breadcrumb breadcrumb">
                <li class="breadcrumb-item"><a href="<?= base_url(); ?>dashboard"><i class="fa fa-home fa-lg"></i></a></li>
-               <li class="breadcrumb-item"><a href="<?= base_url(); ?>users">Usuarios</a></li>
+               <li class="breadcrumb-item"><a href="<?= base_url(); ?>users"> Usuarios</a></li>
           </ul>
      </div>
      <div class="row">

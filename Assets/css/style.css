@@ -47,16 +47,24 @@ body {
   text-align: center;
 }
 
-.headerRegister{
+.headerRegister {
   background: #009688;
   color: #fff;
 }
 
-.headerUpdate{
+.headerUpdate {
   background: #007bff;
   color: #fff;
 }
 
-.notBlock{
+.notBlock {
   display: none;
+}
+
+.decoration-card {
+  text-decoration: none;
+}
+
+div h4{
+  text-decoration: none;
 }

@@ -2,9 +2,30 @@ var tableProductos;
 
 document.addEventListener("DOMContentLoaded", function () {
   // Mostrar los datos en la tabla
-  tableProductos = $("#tblProductos").dataTable({
+  tableProductos = $("#tblProductos").DataTable({
     aProcessing: true,
     aServerSide: true,
+    sDom: "Bfrtip",
+    buttons: [
+      {
+        extend: "excelHtml5",
+        titleAttr: "Exportar a Excel",
+        text: '<i class="fas fa-file-excel" aria-hidden="true"> </>',
+        className: "btn btn-success",
+      },
+      {
+        extend: "pdfHtml5",
+        titleAttr: "Exportar a PDF",
+        text: '<i class="far fa-file-pdf" aria-hidden="true"> </>',
+        className: "btn btn-warning",
+      },
+      {
+        extend: "print",
+        titleAttr: "Imprimir",
+        text: '<i class="fas fa-print" aria-hidden="true"> </>',
+        className: "btn btn-info",
+      },
+    ],
     languaje: {
       url: "//cnd.datatables.net/plug-ins/1.10.20/i18n/spanish.json",
     },
@@ -81,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Enviamos mensaje de exito
             swal("Productos", objData.msg, "success");
             // Recargamos la tabla
-            tableProductos.api().ajax.reload(function () {
+            tableProductos.reload(function () {
               fntEditProducto();
               fntDeleteProducto();
             });
@@ -100,14 +121,14 @@ $("#tblProductos").DataTable();
 // Funcion para mostrar el modal
 function OpenModalProductos() {
   document.querySelector("#idProducto").value = "";
-  document.querySelector("#titleModal").innerHTML = "New Product";
+  document.querySelector("#titleModal").innerHTML = "Nuevo Producto";
   document
     .querySelector(".modal-header")
     .classList.replace("headerUpdate", "headerRegister");
   document
     .querySelector("#btnGuardar")
     .classList.replace("btn-info", "btn-primary");
-  document.querySelector("#btnText").innerHTML = "Save";
+  document.querySelector("#btnText").innerHTML = "Guardar";
   document.querySelector("#frmProducto").reset();
   $("#modalProductos").modal("show");
 }
@@ -129,14 +150,14 @@ function fntEditProducto() {
   btnEditProducto.forEach(function (btnEditProducto) {
     btnEditProducto.addEventListener("click", function () {
       // Editar el estilo del modal
-      document.querySelector("#titleModal").innerHTML = "Product Update";
+      document.querySelector("#titleModal").innerHTML = "Actualizar Producto";
       document
         .querySelector(".modal-header")
         .classList.replace("headerRegister", "headerUpdate");
       document
         .querySelector("#btnGuardar")
         .classList.replace("btn-primary", "btn-info");
-      document.querySelector("#btnText").innerHTML = "Update";
+      document.querySelector("#btnText").innerHTML = "Actualizar";
 
       // Obtener los datos
       var idProducto = this.getAttribute("idProducto");
@@ -201,7 +222,7 @@ function fntEditProducto() {
       };
 
       // Mostramos el modal
-      $("#modalProductos").modal("show");
+      // $("#modalProductos").modal("show");
     });
   });
 }

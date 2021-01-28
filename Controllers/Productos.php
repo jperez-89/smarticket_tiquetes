@@ -10,8 +10,8 @@ class  Productos extends Controllers
 
      public function Productos()
      {
-          $data['page_title'] = "Supermarket  - Products List";
-          $data['page_name'] = "Products List";
+          $data['page_title'] = "Supermarket  - Productos";
+          $data['page_name'] = "Productos";
           // Hacemos el enlace a la vista
           $this->views->getViews($this, 'Productos', $data);
      }
@@ -35,6 +35,14 @@ class  Productos extends Controllers
                                              </button>
                                         </div>';
           }
+          echo json_encode($arrdatos, JSON_UNESCAPED_UNICODE);
+          die();
+     }
+
+     public function getCantProductos()
+     {
+          $arrdatos = $this->model->selectCantProductos();
+
           echo json_encode($arrdatos, JSON_UNESCAPED_UNICODE);
           die();
      }

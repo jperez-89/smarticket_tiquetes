@@ -16046,6 +16046,7 @@ be a descendant of the grid when it is being dragged.
 }
 
 .widget-small .info h4 {
+  color: #009688;
   text-transform: uppercase;
   margin: 0;
   margin-bottom: 5px;

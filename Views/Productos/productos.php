@@ -5,13 +5,13 @@
      <div class="app-title">
           <div>
                <h1>
-                    <i class="fa fa-dashboard"></i> <?= $data['page_name'] ?>
-                    <button class="btn btn-primary" type="button" onclick="OpenModalProductos()"><i class="fas fa-plus-circle" data-toggle="modal" data-target="#modalFormRoles"> New</i></button>
+                    <i class="fa fa-box"></i> <?= $data['page_name'] ?>
+                    <button class="btn btn-primary" type="button" onclick="OpenModalProductos()"><i class="fas fa-plus-circle" data-toggle="modal" data-target="#modalFormRoles"> Nuevo</i></button>
                </h1>
           </div>
           <ul class="app-breadcrumb breadcrumb">
                <li class="breadcrumb-item"><a href="<?= base_url(); ?>dashboard"><i class="fa fa-home fa-lg"></i></a></li>
-               <li class="breadcrumb-item"><a href="<?= base_url(); ?>productos">Products List</a></li>
+               <li class="breadcrumb-item"><a href="<?= base_url(); ?>productos"> Productos</a></li>
           </ul>
      </div>
      <div class="row">
@@ -23,13 +23,13 @@
                                    <thead>
                                         <tr>
                                              <th>Id</th>
-                                             <th>Name</th>
-                                             <th>Price</th>
+                                             <th>Nombre</th>
+                                             <th>Precio</th>
                                              <th>Stock</th>
-                                             <th>Description</th>
-                                             <th>Measure</th>
-                                             <th>State</th>
-                                             <th>Actions</th>
+                                             <th>Descripción</th>
+                                             <th>Medida</th>
+                                             <th>Estado</th>
+                                             <th>Acción</th>
                                         </tr>
                                    </thead>
                                    <tbody>

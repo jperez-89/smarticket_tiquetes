@@ -54,6 +54,16 @@ class Crud extends Conexion
           return $data;
      }
 
+     // -----------------> METODO PARA CONTAR TODOS LOS REGISTROS <-----------------
+     public function get_CountRegister(string $query)
+     {
+          $this->stringQuery = $query;
+          $result = $this->cone->prepare($this->stringQuery);
+          $result->execute();
+          $data = $result->fetchall(PDO::FETCH_ASSOC);
+          return $data;
+     }
+
      // -----------------> METODO PARA ACTUALIZAR REGISTRO <-----------------
      public function update_Register(string $query, array $arrValues)
      {
