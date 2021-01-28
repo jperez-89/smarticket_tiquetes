@@ -38,12 +38,13 @@ document.addEventListener("DOMContentLoaded", function () {
       { data: "description" },
       { data: "measure" },
       { data: "state" },
+      { data: "img" },
       { data: "options" },
     ],
     responsive: "true",
     bDestroy: true,
     iDisplayLenght: 10,
-    order: [[0, "asc"]],
+    order: [[0, "desc"]],
   });
 
   // Registro de nuevo producto
@@ -102,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Enviamos mensaje de exito
             swal("Productos", objData.msg, "success");
             // Recargamos la tabla
-            tableProductos.reload(function () {
+            tableProductos.ajax.reload(function () {
               fntEditProducto();
               fntDeleteProducto();
             });
@@ -268,7 +269,7 @@ function fntDeleteProducto() {
                 var objData = JSON.parse(request.responseText);
                 if (objData.status) {
                   swal("Eliminar!", objData.msg, "success");
-                  tableProductos.api().ajax.reload(function () {
+                  tableProductos.ajax.reload(function () {
                     fntEditProducto();
                     fntDeleteProducto();
                   });

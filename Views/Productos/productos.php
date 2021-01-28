@@ -29,6 +29,7 @@
                                              <th>Descripción</th>
                                              <th>Medida</th>
                                              <th>Estado</th>
+                                             <th>Imagen</th>
                                              <th>Acción</th>
                                         </tr>
                                    </thead>

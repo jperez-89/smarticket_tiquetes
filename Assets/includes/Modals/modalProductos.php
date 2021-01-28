@@ -15,24 +15,24 @@
                                    <input type="hidden" name="idProducto" id="idProducto" value="">
                                    <div class="form-group">
                                         <label for="txtNombre" class="control-label">Nombre</label>
-                                        <input class="form-control" id="txtNombre" name="txtNombre" type="text" placeholder="Ingrese el nombre">
+                                        <input class="form-control" id="txtNombre" name="txtNombre" type="text" placeholder="Nombre del producto">
                                    </div>
                                    <div class="form-group">
                                         <label for="txtPrecio" class="control-label">Precio</label>
-                                        <input class="form-control" id="txtPrecio" name="txtPrecio" type="text" placeholder="Price of product">
+                                        <input class="form-control" id="txtPrecio" name="txtPrecio" type="text" placeholder="Precio del producto">
                                    </div>
                                    <div class="form-group">
                                         <label for="txtStock" class="control-label">Stock</label>
-                                        <input class="form-control" id="txtStock" name="txtStock" type="text" placeholder="Quantity in stock">
+                                        <input class="form-control" id="txtStock" name="txtStock" type="text" placeholder="Cantidad en stock">
                                    </div>
                                    <div class="form-group">
                                         <label for="txtDescripcion" class="control-label">Descripción</label>
-                                        <input class="form-control" id="txtDescripcion" name="txtDescripcion" type="text" placeholder="Description">
+                                        <input class="form-control" id="txtDescripcion" name="txtDescripcion" type="text" placeholder="Descripción">
                                    </div>
                                    <div class="form-group">
                                         <label for="selecMedida" class="control-label">Medida</label>
                                         <select class="form-control" name="selecMedida" id="selecMedida">
-                                             <option value="">Seleccionar...</option>
+                                             <option value="">Selecciona una opción</option>
                                              <option value="KG">KG</option>
                                              <option value="UNIDAD">UNIDAD</option>
                                         </select>
