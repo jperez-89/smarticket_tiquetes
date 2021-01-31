@@ -14,7 +14,7 @@ class  Productos extends Controllers
           $data['page_name'] = "Productos";
           $data['page_functions'] = "js/function_Products.js";
           // Hacemos el enlace a la vista
-          $this->views->getViews($this, 'Productos', $data);
+          $this->views->getViews($this, 'productos', $data);
      }
 
      public function getProductos()

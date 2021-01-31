@@ -1,6 +1,6 @@
 <?php
 
-class UsersModel extends Crud
+class UsuariosModel extends Crud
 {
      public function __construct()
      {

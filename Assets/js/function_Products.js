@@ -10,21 +10,21 @@ document.addEventListener("DOMContentLoaded", function () {
       {
         extend: "excelHtml5",
         titleAttr: "Exportar a Excel",
-        text: '<i class="fas fa-file-excel" aria-hidden="true"> </>',
-        className: "btn btn-success",
+        text: '<h6><i class="fas fa-file-excel" aria-hidden="true"></i> Excel <h6/> ',
+        className: "btn btn-success btn-sm m-1",
       },
       {
         extend: "pdfHtml5",
         titleAttr: "Exportar a PDF",
-        text: '<i class="far fa-file-pdf" aria-hidden="true"> </>',
-        className: "btn btn-warning",
+        text: '<h6><i class="far fa-file-pdf" aria-hidden="true"></i> PDF <h6/>',
+        className: "btn btn-danger btn-sm m-1",
       },
-      {
-        extend: "print",
-        titleAttr: "Imprimir",
-        text: '<i class="fas fa-print" aria-hidden="true"> </>',
-        className: "btn btn-info",
-      },
+      // {
+      //   extend: "print",
+      //   titleAttr: "Imprimir",
+      //   text: '<label><i class="fas fa-print" aria-hidden="true"></i> IMPRIMIR <label/> ',
+      //   className: "btn btn-info btn-sm",
+      // },
     ],
     languaje: {
       url: "//cnd.datatables.net/plug-ins/1.10.20/i18n/spanish.json",
@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
 $("#tblProductos").DataTable();
 
 // Funcion para mostrar el modal
-function OpenModalProductos() {
+function OpenModal() {
   document.querySelector("#idProducto").value = "";
   document.querySelector("#titleModal").innerHTML = "Nuevo Producto";
   document
@@ -265,7 +265,6 @@ function fntDeleteProducto() {
 
             request.onreadystatechange = function () {
               if (request.readyState == 4 && request.status == 200) {
-                
                 var objData = JSON.parse(request.responseText);
                 if (objData.status) {
                   swal("Eliminar!", objData.msg, "success");

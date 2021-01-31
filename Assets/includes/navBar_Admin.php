@@ -11,7 +11,7 @@
      <ul class="app-menu">
           <!-- DASHBOARD --------------------------------------- -->
           <li>
-               <a class="app-menu__item" href="<?= base_url() ?>dashboard">
+               <a class="app-menu__item" href="<?= base_url() ?>">
                     <i class="app-menu__icon fa fa-dashboard"></i>
                     <span class="app-menu__label">Dashboard</span>
                </a>
@@ -20,7 +20,7 @@
           <!-- CLIENTES --------------------------------------- -->
           <li>
                <a class="app-menu__item" href="<?= base_url() ?>clientes">
-                    <i class="app-menu__icon fa fa-user"></i>
+                    <i class="app-menu__icon fas fa-people-arrows"></i>
                     <span class="app-menu__label">Clientes</span>
                </a>
           </li>
@@ -72,11 +72,11 @@
                </a>
                <ul class="treeview-menu">
                     <li>
-                         <a class="treeview-item" href="<?= base_url() ?>users"><i class="icon fa fa-circle-o"></i>Usuarios</a>
+                         <a class="treeview-item" href="<?= base_url() ?>usuarios"><i class="icon fa fa-circle-o"></i>Usuarios</a>
                     </li>
                     <li>
                          <a class="treeview-item" href="<?= base_url() ?>roles" target="" rel="noopener">
-                              <i class="icon fa fa-circle-o"></i>Roles
+                              <i class="icon fa fa-circle-o"></i>Roles de usuario
                          </a>
                     </li>
                </ul>

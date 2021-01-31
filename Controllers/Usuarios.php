@@ -1,6 +1,6 @@
 <?php
 
-class  Users extends Controllers
+class  Usuarios extends Controllers
 {
      public function __construct()
      {
@@ -8,7 +8,7 @@ class  Users extends Controllers
           parent::__construct();
      }
 
-     public function Users()
+     public function Usuarios()
      {
           $data['page_title'] = "Tienda Virtual - Usuarios";
           $data['page_name'] = "Usuarios";
