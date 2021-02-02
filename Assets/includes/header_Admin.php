@@ -23,7 +23,7 @@
 <body class="app sidebar-mini">
      <!-- Navbar-->
      <header class="app-header">
-          <a class="app-header__logo" href="<?php base_url() ?>">Supermarket</a>
+          <a class="app-header__logo" href="<?php base_url()?>dashboard">Supermarket</a>
           <!-- Sidebar toggle button-->
           <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
           <!-- Navbar Right Menu-->

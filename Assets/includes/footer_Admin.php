@@ -43,7 +43,7 @@ switch ($data['page_name']) {
      case 'Usuarios':
           echo '<script type="text/javascript" src="' . base . media . $data['page_functions'] . '"></script>';
           break;
-     case 'Roles':
+     case 'Roles de usuario':
           echo '<script type="text/javascript" src="' . base . media . $data['page_functions'] . '"></script>';
           break;
      default:

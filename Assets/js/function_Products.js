@@ -10,13 +10,15 @@ document.addEventListener("DOMContentLoaded", function () {
       {
         extend: "excelHtml5",
         titleAttr: "Exportar a Excel",
-        text: '<h6><i class="fas fa-file-excel" aria-hidden="true"></i> Excel <h6/> ',
+        text:
+          '<h6><i class="fas fa-file-excel" aria-hidden="true"></i> Excel <h6/> ',
         className: "btn btn-success btn-sm m-1",
       },
       {
         extend: "pdfHtml5",
         titleAttr: "Exportar a PDF",
-        text: '<h6><i class="far fa-file-pdf" aria-hidden="true"></i> PDF <h6/>',
+        text:
+          '<h6><i class="far fa-file-pdf" aria-hidden="true"></i> PDF <h6/>',
         className: "btn btn-danger btn-sm m-1",
       },
       // {
