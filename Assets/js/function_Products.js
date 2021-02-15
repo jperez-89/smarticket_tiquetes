@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
     languaje: {
       url: "//cnd.datatables.net/plug-ins/1.10.20/i18n/spanish.json",
     },
-    ajax: { url: " " + base_url + "/Productos/getProductos", dataSrc: "" },
+    ajax: { url: ` ${base_url}/Productos/getProductos`, dataSrc: "" },
     columns: [
       { data: "id" },
       { data: "name" },
@@ -93,8 +93,6 @@ document.addEventListener("DOMContentLoaded", function () {
       request.send(frmData);
       request.onreadystatechange = function () {
         if (request.readyState == 4 && request.status == 200) {
-          // console.log(request);
-          // console.log(request.responseText);
           var objData = JSON.parse(request.responseText);
 
           if (objData.status) {
@@ -119,22 +117,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-$("#tblProductos").DataTable();
-
-// Funcion para mostrar el modal
-function OpenModal() {
-  document.querySelector("#idProducto").value = "";
-  document.querySelector("#titleModal").innerHTML = "Nuevo Producto";
-  document
-    .querySelector(".modal-header")
-    .classList.replace("headerUpdate", "headerRegister");
-  document
-    .querySelector("#btnGuardar")
-    .classList.replace("btn-info", "btn-primary");
-  document.querySelector("#btnText").innerHTML = "Guardar";
-  document.querySelector("#frmProducto").reset();
-  $("#modalProductos").modal("show");
-}
 
 // Para que se agreguen automaticamente los eventos
 window.addEventListener(
@@ -284,4 +266,19 @@ function fntDeleteProducto() {
       );
     });
   });
+}
+
+// Funcion para mostrar el modal
+function OpenModal() {
+  document.querySelector("#idProducto").value = "";
+  document.querySelector("#titleModal").innerHTML = "Nuevo Producto";
+  document
+    .querySelector(".modal-header")
+    .classList.replace("headerUpdate", "headerRegister");
+  document
+    .querySelector("#btnGuardar")
+    .classList.replace("btn-info", "btn-primary");
+  document.querySelector("#btnText").innerHTML = "Guardar";
+  document.querySelector("#frmProducto").reset();
+  $("#modalProductos").modal("show");
 }

@@ -37,12 +37,11 @@
                                              <div class="form-group">
                                                   <label for="selecProvincia" class="control-label">Provincia</label>
                                                   <select onchange="CargaCanton(this.value);" class="form-control" name="selecProvincia" id="selecProvincia">
-
                                                   </select>
                                              </div>
                                              <div class="form-group">
                                                   <label for="selecCanton" class="control-label">Cantón</label>
-                                                  <select onchange="CargaDistrito(this.value);" class="form-control" name="selecCanton" id="selecCanton">
+                                                  <select onchange="CargaDistrito(this.value);" class="form-control" name="  " id="selecCanton">
                                                   </select>
                                              </div>
                                              <div class="form-group">
@@ -53,6 +52,32 @@
                                              <div class="form-group">
                                                   <label for="txtDireccion" class="control-label">Dirección</label>
                                                   <input class="form-control" id="txtDireccion" name="txtDireccion" type="text" placeholder="Dirección exacta">
+                                             </div>
+                                        </div>
+                                   </div>
+                                   <div class="row">
+                                        <div class="col-md-4">
+                                             <div class="form-group">
+                                                  <label for="txtActividad" class="control-label">Actividad</label>
+                                                  <input class="form-control" id="txtActividad" name="txtActividad" type="text" placeholder="Actividad">
+                                             </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                             <div class="form-group">
+                                                  <label for="selecRegimen" class="control-label">Régimen</label>
+                                                  <select class="form-control" name="selecRegimen" id="selecRegimen">
+                                                       <option value="Factura Electrónica">Factura Electrónica</option>
+                                                       <option value="Simplificado">Simplificado</option>
+                                                  </select>
+                                             </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                             <div class="form-group">
+                                                  <label for="selecEstado" class="control-label">Estado</label>
+                                                  <select class="form-control" name="selecEstado" id="selecEstado">
+                                                       <option value="1">Activo</option>
+                                                       <option value="0">Inactivo</option>
+                                                  </select>
                                              </div>
                                         </div>
                                    </div>

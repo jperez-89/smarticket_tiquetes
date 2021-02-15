@@ -22,17 +22,16 @@
                               <table class="table table-hover table-bordered table-sm" id="tblClientes">
                                    <thead>
                                         <tr>
-                                             <th>ID</th>
+                                             <th>Id</th>
                                              <th>Identificación</th>
                                              <th>Nombre</th>
                                              <th>Teléfono</th>
                                              <th>Email</th>
-                                             <th>Provincia</th>
-                                             <th>Cantón</th>
-                                             <th>Distrito</th>
                                              <th>Dirección</th>
                                              <th>Actividad</th>
                                              <th>Tipo Régimen</th>
+                                             <th>Estado</th>
+                                             <th>Acciones</th>
                                         </tr>
                                    </thead>
                                    <tbody>

@@ -51,6 +51,8 @@ class Crud extends Conexion
           $result = $this->cone->prepare($this->stringQuery);
           $result->execute();
           $data = $result->fetchall(PDO::FETCH_ASSOC);
+          $result = null;
+          $this->cone = null;
           return $data;
      }
 

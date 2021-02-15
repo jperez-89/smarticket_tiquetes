@@ -92,17 +92,17 @@ class ProductosModel extends Crud
           $this->idProducto = $idProducto;
           $sql = "SELECT * FROM productos WHERE id = $this->idProducto";
           $resquest = $this->get_OneRegister($sql);
-          
+
           if (!empty($resquest)) {
                $sql = "UPDATE productos SET state = ? WHERE id = $this->idProducto";
                $arrData = array(0);
                $resquest = $this->update_Register($sql, $arrData);
                if ($resquest) {
                     $resquest = "ok";
-               }else{
+               } else {
                     $resquest = "error";
                }
-          }else {
+          } else {
                $resquest = "exist";
           }
           return $resquest;
