@@ -27,6 +27,11 @@ class  Clientes extends Controllers
      public function getCanton(int $idProvincia)
      {
           $arrdatos = $this->model->selecCanton($idProvincia);
+          if (empty($arrdatos)) {
+               $arrdatos = array('status' => false, 'msg' => 'Datos no encontrados');
+          } else {
+               $arrdatos = array('status' => true, 'data' => $arrdatos);
+          }
           echo json_encode($arrdatos, JSON_UNESCAPED_UNICODE);
           die();
      }
@@ -34,6 +39,11 @@ class  Clientes extends Controllers
      public function getDistrito(int $idCanton)
      {
           $arrdatos = $this->model->selecDistrito($idCanton);
+          if (empty($arrdatos)) {
+               $arrdatos = array('status' => false, 'msg' => 'Datos no encontrados');
+          } else {
+               $arrdatos = array('status' => true, 'data' => $arrdatos);
+          }
           echo json_encode($arrdatos, JSON_UNESCAPED_UNICODE);
           die();
      }
