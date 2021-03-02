@@ -1,27 +1,24 @@
-var tblClientes, Provincias, Cantones, Distritos;
+var tblClientes, Provincias, Cantones, Distritos, IdCa, encontro;
 var selecProvincia = document.getElementById("selecProvincia");
 var selecCanton = document.getElementById("selecCanton");
 var selecDistrito = document.getElementById("selecDistrito");
 
 document.addEventListener("DOMContentLoaded", function () {
   // Mostrar los datos en la tabla
-  tblClientes = $("#tblClientes").DataTable({
+  var tblClientes = $("#tblClientes").DataTable({
     aProcessing: true,
     aServerSide: true,
     sDom: "Bfrtip",
-    buttons: [
-      {
+    buttons: [{
         extend: "excelHtml5",
         titleAttr: "Exportar a Excel",
-        text:
-          '<h6><i class="fas fa-file-excel" aria-hidden="true"></i> Excel <h6/> ',
+        text: '<h6><i class="fas fa-file-excel" aria-hidden="true"></i> Excel <h6/> ',
         className: "btn btn-success btn-sm m-1",
       },
       {
         extend: "pdfHtml5",
         titleAttr: "Exportar a PDF",
-        text:
-          '<h6><i class="far fa-file-pdf" aria-hidden="true"></i> PDF <h6/>',
+        text: '<h6><i class="far fa-file-pdf" aria-hidden="true"></i> PDF <h6/>',
         className: "btn btn-danger btn-sm m-1",
       },
     ],
@@ -32,8 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
       url: ` ${base_url}/Clientes/getClientes`,
       dataSrc: "",
     },
-    columns: [
-      {
+    columns: [{
         data: "Id",
       },
       {
@@ -67,7 +63,9 @@ document.addEventListener("DOMContentLoaded", function () {
     responsive: "true",
     bDestroy: true,
     iDisplayLenght: 10,
-    order: [[0, "desc"]],
+    order: [
+      [0, "desc"]
+    ],
   });
 
   // Registro de nuevo producto
@@ -75,9 +73,10 @@ document.addEventListener("DOMContentLoaded", function () {
   if (frmClientes != null) {
     frmClientes.onsubmit = function (e) {
       e.preventDefault();
+
       // Extraemos los datos
-      var txtIdentificacion = document.querySelector("#txtIdentificacion")
-        .value;
+      var idCliente = document.querySelector("#idCliente").value;
+      var txtIdentificacion = document.querySelector("#txtIdentificacion").value;
       var txtNombre = document.querySelector("#txtNombre").value;
       var txtTelefono = document.querySelector("#txtTelefono").value;
       var txtEmail = document.querySelector("#txtEmail").value;
@@ -85,6 +84,10 @@ document.addEventListener("DOMContentLoaded", function () {
       var selecCanton = document.querySelector("#selecCanton").value;
       var selecDistrito = document.querySelector("#selecDistrito").value;
       var txtDireccion = document.querySelector("#txtDireccion").value;
+      var txtActividad = document.querySelector("#txtActividad").value;
+      var selecRegimen = document.querySelector("#selecRegimen").value;
+      var selecEstado = document.querySelector("#selecEstado").value;
+
       // Validamos si los campos estan vacios para mostrar alerta
       if (
         txtIdentificacion == "" ||
@@ -94,28 +97,30 @@ document.addEventListener("DOMContentLoaded", function () {
         selecProvincia == "" ||
         selecCanton == "" ||
         selecDistrito == "" ||
-        txtDireccion == ""
+        txtDireccion == "" ||
+        txtActividad == "" ||
+        selecRegimen == "" ||
+        selecEstado == ""
       ) {
         swal("Atención", "Todos los campos son obligatorios", "error");
         return false;
-      } /* Detecta en cual navegador se encuentra el usuario
+      }
+
+      /* Detecta en cual navegador se encuentra el usuario
                   Si está en chrome o firefox crea un elemento xmlhttprequest
                   sino crea un objeto activexobjet de microsoft
              */
-
-      var request = window.XMLHttpRequest
-        ? new XMLHttpRequest()
-        : new ActiveXObject("Microsoft.XMLHTTP");
+      var request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
       var Url = base_url + "Clientes/setCliente";
       var frmData = new FormData(frmClientes);
+
       //   Enviamos los datos por medio de ajax
       request.open("POST", Url, true);
       request.send(frmData);
       request.onreadystatechange = function () {
         if (request.readyState == 4 && request.status == 200) {
-          // console.log(request);
-          // console.log(request.responseText);
           var objData = JSON.parse(request.responseText);
+
           if (objData.status) {
             // Reseteamos los campos del formulario de productos
             frmClientes.reset();
@@ -125,8 +130,7 @@ document.addEventListener("DOMContentLoaded", function () {
             swal("Clientes", objData.msg, "success");
             // Recargamos la tabla
             tblClientes.ajax.reload(function () {
-              fntEditProducto();
-              // fntDeleteProducto();
+              btnEditCliente();
             });
           } else {
             // Mostramos error
@@ -158,9 +162,9 @@ function resetListaDistrito() {
 
 // LLENADO DEL SELEC PROVINCIA
 function CargaProvincia() {
-  var request = window.XMLHttpRequest
-    ? new XMLHttpRequest()
-    : new ActiveXObject("Microsoft.XMLHTTP");
+  var request = window.XMLHttpRequest ?
+    new XMLHttpRequest() :
+    new ActiveXObject("Microsoft.XMLHTTP");
   var Url = base_url + "Clientes/getProvincia";
   request.open("GET", Url, true);
   request.send();
@@ -182,9 +186,9 @@ function CargaProvincia() {
 // FUNCION QUE LLENA EL COMBO DE CANTON AL SELECCIONAR UNA PROVINCIA
 function CargaCanton(idProvincia) {
   // VERIFICAMOS QUE TIPO DE NAVEGADOR UTILIZA EL CLIENTE
-  var request = window.XMLHttpRequest
-    ? new XMLHttpRequest()
-    : new ActiveXObject("Microsoft.XMLHTTP");
+  var request = window.XMLHttpRequest ?
+    new XMLHttpRequest() :
+    new ActiveXObject("Microsoft.XMLHTTP");
 
   // OBTENEMOS LOS CANTONES ENVIANDO EL ID DE LA PROVINCIA
   var Url = `${base_url}Clientes/getCanton/${idProvincia}`;
@@ -211,44 +215,62 @@ function CargaCanton(idProvincia) {
   };
 }
 
-// FUNCION CON $.GET
-function CargaCanton2(IdProvincia) {
-  resetListaCanton();
+// FUNCION CON FETCH
+function CargaCanton_Fetch(IdProvincia) {
+  // resetListaCanton();
   if (IdProvincia != "") {
-    var Url = base_url + "Clientes/getCanton/" + IdProvincia;
+    var Url = `${base_url}Clientes/getCanton/${IdProvincia}`;
 
-    $.get(Url, function (data) {
-      // AGREGAMOS UNA OPCION DEFAULT AL SELECT
-      selecCanton.options[0] = new Option("Selecciona un Cantón", "0");
+    fetch(Url)
+      .then(res => res.json())
+      .then(data => {
+        selecCanton.options[0] = new Option("Selecciona un Cantón", "0");
+        Cantones = data;
 
-      // ALMACENAMOS LA INFORMACION QUE NOS DA LA CONSULTA A LA BASE DE DATOS
-      Cantones = JSON.parse(data);
+        // ASIGNAMOS LOS VALORES AL SELECT DE CANTONES
+        for (let i = 1; i <= Cantones.length; i++) {
+          selecCanton.options[i] = new Option(
+            Cantones[i - 1]["NombreCanton"],
+            Cantones[i - 1]["Id"]
+          );
+        }
+      });
+  }
+  return Cantones;
+}
 
-      // ASIGNAMOS LOS VALORES AL SELECT DE CANTONES
-      for (let i = 1; i <= Cantones.length; i++) {
-        selecCanton.options[i] = new Option(
-          Cantones[i - 1]["NombreCanton"],
-          Cantones[i - 1]["Id"]
+function CargaDistrito_Fetch(idCanton) {
+  var Url = `${base_url}Clientes/getDistrito/${idCanton}`;
+  fetch(Url)
+    .then(res => res.json())
+    .then(data => {
+      selecDistrito.options[0] = new Option("Selecciona un Distrito", "0");
+      Distritos = data;
+
+      // ASIGNAMOS LOS VALORES AL SELECT DE DISTRITOS
+      for (let i = 1; i <= Distritos.length; i++) {
+        selecDistrito.options[i] = new Option(
+          Distritos[i - 1]["nombreDistrito"],
+          Distritos[i - 1]["Id"]
         );
       }
     });
-  }
+  return Distritos;
 }
 
 // FUNCION QUE LLENA EL COMBO DE DISTRITO AL SELECCIONAR UN CANTON
 function CargaDistrito(idCanton) {
-  var request = window.XMLHttpRequest
-    ? new XMLHttpRequest()
-    : new ActiveXObject("Microsoft.XMLHTTP");
-  var Url = base_url + "Clientes/getDistrito/" + idCanton;
-  request.open("GET", Url, true);
+  var request = window.XMLHttpRequest ?
+    new XMLHttpRequest() :
+    new ActiveXObject("Microsoft.XMLHTTP");
+  var Url = `${base_url}Clientes/getDistrito/${idCanton}`;
+  request.open("GET", Url);
   request.send();
 
   request.onreadystatechange = function () {
     if (request.readyState == 4 && request.status == 200) {
       selecDistrito.options[0] = new Option("Selecciona un Distrito", "0");
       Distritos = JSON.parse(request.responseText);
-      // Distritos = objData;
 
       for (let i = 1; i <= Distritos.length; i++) {
         selecDistrito.options[i] = new Option(
@@ -258,6 +280,7 @@ function CargaDistrito(idCanton) {
       }
     }
   };
+  return Distritos;
 }
 
 // CARGA AUTOMATICA DE PROCESOS
@@ -282,103 +305,95 @@ function btnEditCliente() {
     btnEditCliente.addEventListener("click", function () {
       // Editar el estilo del modal
       document.querySelector("#titleModal").innerHTML = "Actualizar Cliente";
-      document
-        .querySelector(".modal-header")
-        .classList.replace("headerRegister", "headerUpdate");
-      document
-        .querySelector("#btnGuardar")
-        .classList.replace("btn-primary", "btn-info");
+      document.querySelector(".modal-header").classList.replace("headerRegister", "headerUpdate");
+      document.querySelector("#btnGuardar").classList.replace("btn-primary", "btn-info");
       document.querySelector("#btnText").innerHTML = "Actualizar";
-      // Obtener los datos
+
       var idCliente = this.getAttribute("idCliente");
-      var request = window.XMLHttpRequest
-        ? new XMLHttpRequest()
-        : new ActiveXObject("Microsoft.XMLHTTP");
       var url = `${base_url}Clientes/getCliente/${idCliente}`;
-      request.open("GET", url, true);
-      request.send();
-      request.onreadystatechange = function () {
-        if (request.readyState == 4 && request.status == 200) {
-          var InfoCliente = JSON.parse(request.responseText);
-          // MOSTRAMOS LOS DATOS A EDITAR
+      fetch(url)
+        .then(res => res.json())
+        .then(InfoCliente => {
           if (InfoCliente.status) {
+            // MOSTRAMOS LOS DATOS A EDITAR
             document.querySelector("#idCliente").value = InfoCliente.data.Id;
-            document.querySelector("#txtIdentificacion").value =
-              InfoCliente.data.Identificacion;
-            document.querySelector("#txtNombre").value =
-              InfoCliente.data.Nombre;
-            document.querySelector("#txtTelefono").value =
-              InfoCliente.data.Telefono;
+            document.querySelector("#txtIdentificacion").value = InfoCliente.data.Identificacion;
+            document.querySelector("#txtIdentificacion").disabled = true;
+            document.querySelector("#txtNombre").value = InfoCliente.data.Nombre;
+            document.querySelector("#txtTelefono").value = InfoCliente.data.Telefono;
             document.querySelector("#txtEmail").value = InfoCliente.data.Email;
-            document.querySelector("#txtDireccion").value =
-              InfoCliente.data.Direccion;
-            document.querySelector("#txtActividad").value =
-              InfoCliente.data.Actividad;
+            document.querySelector("#txtDireccion").value = InfoCliente.data.Direccion;
+            document.querySelector("#txtActividad").value = InfoCliente.data.Actividad;
 
             // PROCESO PARA SELECCCIONAR LA PROVINCIA DEL CLIENTE
             selecProvincia.selectedIndex = InfoCliente.data.idProvincia;
 
-            // CARGA EL SELECT DE CANTONES Y MUESTRA EL DEL CLIENTE
-            // let idProvincia = InfoCliente.data.idProvincia;
-            // CargaCanton(idProvincia);
-            // CargaCanton2(idProvincia);
+            // CARGA EL SELECT DE CANTONES
+            let idProvincia = InfoCliente.data.idProvincia;
+            Cantones = CargaCanton_Fetch(idProvincia);
 
-            // NOTA: A NO RECONOCE Cantones, POR ESO NO SE USAN ESTOS METODOS
             // PROCESO PARA SELECCCIONAR EL CANTON DEL CLIENTE
-            // var encontro;
-            // for (let i = 0; i < Cantones.length; i++) {
-            //   if (InfoCliente.data.idCanton == Cantones[i].Id) {
-            //     encontro = i + 1;
-            //     selecCanton.selectedIndex = encontro;
-            //   }
-            // }
+            let idCanton = InfoCliente.data.idCanton;
+            SeleccionaCantonCliente(Cantones, idCanton, selecCanton);
+
+            // CARGA EL SELECT DE DISTRITOS
+            Distritos = CargaDistrito_Fetch(IdCa);
 
             // PROCESO PARA SELECCCIONAR EL DISTRITO DEL CLIENTE
-            // CargaDistrito(encontro);
-            // for (let index = 0; index < Distritos.length; index++) {
-            //   if (objData.data.idDistrito == Distritos[index].Id) {
-            //     encontro = index + 1;
-            //     selecDistrito.selectedIndex = encontro;
-            //   }
-            // }
+            let idDistrito = InfoCliente.data.idDistrito;
+            SeleccionaDistritoCliente(Distritos, idDistrito);
+
 
             // VALIDA EL REGIMEN
             if (InfoCliente.data.Regimen == "Factura Electrónica") {
-              var select =
-                '<option value="Factura Electrónica" selected class="notBlock">Factura Electrónica</option>';
+              var select = '<option value="Factura Electrónica" selected class="notBlock">Factura Electrónica</option>';
             } else if (InfoCliente.data.Regimen == "Simplificado") {
-              var select =
-                '<option value="Simplificado" selected class="notBlock">Simplificado</option>';
+              var select = '<option value="Simplificado" selected class="notBlock">Simplificado</option>';
             }
             var htmlSelectRegimen = `${select}
-            <option value="Factura Electrónica">Factura Electrónica</option>
-            <option value="Simplificado">Simplificado</option>
-            `;
-            document.querySelector(
-              "#selecRegimen"
-            ).innerHTML = htmlSelectRegimen;
+                   <option value="Factura Electrónica">Factura Electrónica</option>
+                   <option value="Simplificado">Simplificado</option>`;
+            document.querySelector("#selecRegimen").innerHTML = htmlSelectRegimen;
 
             // VALIDA EL ESTADO
             if (InfoCliente.data.Status == 1) {
-              var select =
-                '<option value="1" selected class="notBlock">Activo</option>';
+              var select = '<option value="1" selected class="notBlock">Activo</option>';
             } else if (InfoCliente.data.Status == 0) {
-              var select =
-                '<option value="0" selected class="notBlock">Inactivo</option>';
+              var select = '<option value="0" selected class="notBlock">Inactivo</option>';
             }
             var htmlSelectEstado = `${select}
-            <option value="1">Activo</option>
-            <option value="0">Inactivo</option>`;
+                   <option value="1">Activo</option>
+                   <option value="0">Inactivo</option>`;
             document.querySelector("#selecEstado").innerHTML = htmlSelectEstado;
+
+            // MOSTRAMOS EL MODAL
             $("#modalClientes").modal("show");
           } else {
             // MOSTRAMOS ERROR
             swal("Error", InfoCliente.msg, "error");
           }
-        }
-      };
+        })
     });
   });
+}
+
+function SeleccionaCantonCliente(Cantones, idCanton, selecCanton) {
+  for (let i = 0; i < Cantones.length; i++) {
+    if (idCanton == Cantones[i].Id) {
+      IdCa = i + 1;
+      selecCanton.selectedIndex = IdCa;
+    }
+  }
+  return IdCa;
+}
+
+function SeleccionaDistritoCliente(Distritos, idDistrito) {
+  for (let i = 0; i < Distritos.length; i++) {
+    if (idDistrito == Distritos[i].Id) {
+      encontro = i + 1;
+      selecDistrito.selectedIndex = encontro;
+    }
+  }
 }
 
 // DESPLIEGA EL MODAL

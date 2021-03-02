@@ -6,19 +6,16 @@ document.addEventListener("DOMContentLoaded", function () {
     aProcessing: true,
     aServerSide: true,
     sDom: "Bfrtip",
-    buttons: [
-      {
+    buttons: [{
         extend: "excelHtml5",
         titleAttr: "Exportar a Excel",
-        text:
-          '<h6><i class="fas fa-file-excel" aria-hidden="true"></i> Excel <h6/> ',
+        text: '<h6><i class="fas fa-file-excel" aria-hidden="true"></i> Excel <h6/> ',
         className: "btn btn-success btn-sm m-1",
       },
       {
         extend: "pdfHtml5",
         titleAttr: "Exportar a PDF",
-        text:
-          '<h6><i class="far fa-file-pdf" aria-hidden="true"></i> PDF <h6/>',
+        text: '<h6><i class="far fa-file-pdf" aria-hidden="true"></i> PDF <h6/>',
         className: "btn btn-danger btn-sm m-1",
       },
       // {
@@ -31,22 +28,44 @@ document.addEventListener("DOMContentLoaded", function () {
     languaje: {
       url: "//cnd.datatables.net/plug-ins/1.10.20/i18n/spanish.json",
     },
-    ajax: { url: ` ${base_url}/Productos/getProductos`, dataSrc: "" },
-    columns: [
-      { data: "id" },
-      { data: "name" },
-      { data: "price" },
-      { data: "stock" },
-      { data: "description" },
-      { data: "measure" },
-      { data: "state" },
-      { data: "img" },
-      { data: "options" },
+    ajax: {
+      url: ` ${base_url}/Productos/getProductos`,
+      dataSrc: ""
+    },
+    columns: [{
+        data: "id"
+      },
+      {
+        data: "name"
+      },
+      {
+        data: "price"
+      },
+      {
+        data: "stock"
+      },
+      {
+        data: "description"
+      },
+      {
+        data: "measure"
+      },
+      {
+        data: "state"
+      },
+      {
+        data: "img"
+      },
+      {
+        data: "options"
+      },
     ],
     responsive: "true",
     bDestroy: true,
     iDisplayLenght: 10,
-    order: [[0, "desc"]],
+    order: [
+      [0, "desc"]
+    ],
   });
 
   // Registro de nuevo producto
@@ -81,11 +100,11 @@ document.addEventListener("DOMContentLoaded", function () {
                   Si está en chrome o firefox crea un elemento xmlhttprequest
                   sino crea un objeto activexobjet de microsoft
              */
-      var request = window.XMLHttpRequest
-        ? new XMLHttpRequest()
-        : new ActiveXObject("Microsoft.XMLHTTP");
+      var request = window.XMLHttpRequest ?
+        new XMLHttpRequest() :
+        new ActiveXObject("Microsoft.XMLHTTP");
 
-      var ajaxUrl = base_url + "Productos/setProducto";
+      var ajaxUrl = `${base_url}Productos/setProducto`;
       var frmData = new FormData(frmProducto);
 
       //   Enviamos los datos por medio de ajax
@@ -146,10 +165,8 @@ function fntEditProducto() {
 
       // Obtener los datos
       var idProducto = this.getAttribute("idProducto");
-      var request = window.XMLHttpRequest
-        ? new XMLHttpRequest()
-        : new ActiveXObject("Microsoft.XMLHTTP");
-      var UrlUpdateProducto = base_url + "Productos/getProducto/" + idProducto;
+      var request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+      var UrlUpdateProducto = `${base_url}Productos/getProducto/${idProducto}`;
       request.open("GET", UrlUpdateProducto, true);
       request.send();
 
@@ -221,8 +238,7 @@ function fntDeleteProducto() {
       // Obtener los datos
       var idProducto = this.getAttribute("idProducto");
 
-      swal(
-        {
+      swal({
           title: "Eliminar Producto",
           text: "Realmente quiere eliminar el producto?",
           type: "warning",
@@ -234,9 +250,9 @@ function fntDeleteProducto() {
         },
         (isConfirm) => {
           if (isConfirm) {
-            var request = window.XMLHttpRequest
-              ? new XMLHttpRequest()
-              : new ActiveXObject("Microsoft.XMLHTTP");
+            var request = window.XMLHttpRequest ?
+              new XMLHttpRequest() :
+              new ActiveXObject("Microsoft.XMLHTTP");
 
             var UrlDeleteProducto = base_url + "Productos/deleteProduct/";
             var data = "idProducto=" + idProducto;

@@ -79,7 +79,7 @@ class  Clientes extends Controllers
      public function setCliente()
      {
           $idCliente = intval($_POST['idCliente']);
-          $identificacionCliente = intval($_POST['txtIdentificacion']);
+          $identificacionCliente = strClean($_POST['txtIdentificacion']);
           $nombreCliente = strClean($_POST['txtNombre']);
           $EmailCliente = strClean($_POST['txtEmail']);
           $telefonoCliente = strClean($_POST['txtTelefono']);
@@ -93,10 +93,9 @@ class  Clientes extends Controllers
                $request_Cliente = $this->model->insertCliente($identificacionCliente, $nombreCliente, $telefonoCliente, $EmailCliente, $idDistrito, $DireccionCliente, $actividadCliente, $regimenCliente, $Status);
                $option = 1;
           } else {
-               // $request_Cliente = $this->model->updateCliente($idCliente, $nombreCliente, $telefonoCliente, $EmailCliente, $idDistrito, $DireccionCliente, $actividadCliente, $regimenCliente, $Status);
-               // $option = 2;
+               $request_Cliente = $this->model->updateCliente($idCliente, $nombreCliente, $telefonoCliente, $EmailCliente, $idDistrito, $DireccionCliente, $actividadCliente, $regimenCliente, $Status);
+               $option = 2;
           }
-
 
           if ($request_Cliente > 0) {
                if ($option == 1) {

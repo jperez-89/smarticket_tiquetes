@@ -59,7 +59,7 @@ class ClientesModel extends Crud
           $this->Status = $Status;
 
           // Validamos si existe el producto
-          $sql = "SELECT * FROM clientes WHERE Identificacion = '{$this->identificacionCliente}'";
+          $sql = "SELECT * FROM clientes WHERE Identificacion = '$this->identificacionCliente'";
           $resquest = $this->get_AllRegister($sql);
 
           if (empty($resquest)) {
@@ -71,5 +71,33 @@ class ClientesModel extends Crud
                $return = "exist";
           }
           return $return;
+     }
+
+     public function updateCliente(int $idCliente, string $nombreCliente, string $telefonoCliente, string $emailCliente, int $idDistrito, string $direccionCliente, string $actividadCliente, string $regimenCliente, int $Status)
+     {
+          $this->idCliente = $idCliente;
+          $this->nombreCliente = $nombreCliente;
+          $this->telefonoCliente = $telefonoCliente;
+          $this->emailCliente = $emailCliente;
+          $this->idDistrito = $idDistrito;
+          $this->direccionCliente = $direccionCliente;
+          $this->actividadCliente = $actividadCliente;
+          $this->regimenCliente = $regimenCliente;
+          $this->Status = $Status;
+
+          // Validamos si existe el producto
+          $sql = "SELECT * FROM clientes WHERE Nombre = '$this->nombreCliente' AND Id != $this->idCliente";
+          $resquest = $this->get_AllRegister($sql);
+
+          if (!empty($resquest)) {
+               $query_update = "UPDATE clientes SET Nombre = ?, Telefono = ?, Email = ?, idDistrito = ?, Direccion = ?, Actividad = ?, Regimen = ?, Status = ? WHERE Id = $this->idCliente";
+
+               $arrData = array($this->nombreCliente, $this->telefonoCliente, $this->emailCliente, $this->idDistrito, $this->direccionCliente, $this->actividadCliente, $this->regimenCliente, $this->Status);
+
+               $resquest = $this->update_Register($query_update, $arrData);
+          } else {
+               $resquest = "exist";
+          }
+          return $resquest;
      }
 }
