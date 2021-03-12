@@ -36,12 +36,12 @@
                                         <div class="col-md-6">
                                              <div class="form-group">
                                                   <label for="selecProvincia" class="control-label">Provincia</label>
-                                                  <select onchange="CargaCanton(this.value);" class="form-control" name="selecProvincia" id="selecProvincia">
+                                                  <select onchange="CargaCanton_Fetch(this.value);" class="form-control" name="selecProvincia" id="selecProvincia">
                                                   </select>
                                              </div>
                                              <div class="form-group">
                                                   <label for="selecCanton" class="control-label">Cantón</label>
-                                                  <select onchange="CargaDistrito(this.value);" class="form-control" name="  " id="selecCanton">
+                                                  <select onchange="CargaDistrito_Fetch(this.value);" class="form-control" name="  " id="selecCanton">
                                                   </select>
                                              </div>
                                              <div class="form-group">

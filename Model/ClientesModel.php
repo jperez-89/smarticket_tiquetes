@@ -100,4 +100,25 @@ class ClientesModel extends Crud
           }
           return $resquest;
      }
+
+     public function deleteCliente(int $idCliente)
+     {
+          $this->idCliente = $idCliente;
+          $sql = "SELECT * FROM clientes WHERE Id = $this->idCliente";
+          $resquest = $this->get_OneRegister($sql);
+
+          if (!empty($resquest)) {
+               $sql = "UPDATE clientes SET Status = ? WHERE Id = $this->idCliente";
+               $arrData = array(0);
+               $resquest = $this->update_Register($sql, $arrData);
+               if ($resquest) {
+                    $resquest = "ok";
+               } else {
+                    $resquest = "error";
+               }
+          } else {
+               $resquest = "exist";
+          }
+          return $resquest;
+     }
 }

@@ -1,4 +1,4 @@
-var tblClientes, Provincias, arrCantones, arrDistritos, IdCa, encontro;
+var tblClientes, arrProvincias, arrCantones, arrDistritos, IdCa, idCanton, encontro, idCantonSeleccionado;
 var selecProvincia = document.getElementById("selecProvincia");
 var selecCanton = document.getElementById("selecCanton");
 var selecDistrito = document.getElementById("selecDistrito");
@@ -131,6 +131,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Recargamos la tabla
             tblClientes.ajax.reload(function () {
               btnEditCliente();
+              fntDeleteCliente()
             });
           } else {
             // Mostramos error
@@ -160,83 +161,13 @@ function resetListaDistrito() {
   }
 }
 
-// LLENADO DEL SELEC PROVINCIA
-function CargaProvincia() {
-  var request = window.XMLHttpRequest ?
-    new XMLHttpRequest() :
-    new ActiveXObject("Microsoft.XMLHTTP");
-  var Url = base_url + "Clientes/getProvincia";
-  request.open("GET", Url, true);
-  request.send();
-  request.onreadystatechange = function () {
-    if (request.readyState == 4 && request.status == 200) {
-      selecProvincia.options[0] = new Option("Selecciona una Provincia", "0");
-      Provincias = JSON.parse(request.responseText);
-      // Provincias = objData;
-      for (let i = 1; i <= Provincias.length; i++) {
-        selecProvincia.options[i] = new Option(
-          Provincias[i - 1]["NombreProvincia"],
-          Provincias[i - 1]["Id"]
-        );
-      }
-    }
-  };
-}
-
-// FUNCION FETCH QUE CARGA EL SELECT DE CANTONES
-function CargaCanton_Fetch(IdProvincia) {
-  let Url = `${base_url}Clientes/getCanton/${IdProvincia}`;
-  fetch(Url)
-    .then(response => response.json())
-    .then(data => {
-      if (data.status) {
-        selecCanton.options[0] = new Option("Selecciona un Cantón", "0");
-        arrCantones = data.data;
-
-        // ASIGNAMOS LOS VALORES AL SELECT DE CANTONES
-        for (let i = 1; i <= arrCantones.length; i++) {
-          selecCanton.options[i] = new Option(
-            arrCantones[i - 1]["NombreCanton"],
-            arrCantones[i - 1]["Id"]
-          );
-        }
-      } else {
-        swal("Error", data.msg, "error");
-      }
-    });
-  return arrCantones;
-}
-
-// FUNCION FETC QUE CARGA EL SELECT DE DISTRITOS
-function CargaDistrito_Fetch(idCanton) {
-  let Url = `${base_url}Clientes/getDistrito/${idCanton}`;
-  fetch(Url)
-    .then(response => response.json())
-    .then(data => {
-      if (data.status) {
-        selecDistrito.options[0] = new Option("Selecciona un Distrito", "0");
-        arrDistritos = data.data;
-
-        // ASIGNAMOS LOS VALORES AL SELECT DE DISTRITOS
-        for (let i = 1; i <= arrDistritos.length; i++) {
-          selecDistrito.options[i] = new Option(
-            arrDistritos[i - 1]["nombreDistrito"],
-            arrDistritos[i - 1]["Id"]
-          );
-        }
-      } else {
-        swal("Error", data.msg, "error");
-      }
-    });
-  return arrDistritos;
-}
-
 // CARGA AUTOMATICA DE PROCESOS
 window.addEventListener(
   "load",
   function () {
     CargaProvincia();
     btnEditCliente();
+    fntDeleteCliente()
   },
   false
 );
@@ -273,24 +204,31 @@ function btnEditCliente() {
             document.querySelector("#txtDireccion").value = InfoCliente.data.Direccion;
             document.querySelector("#txtActividad").value = InfoCliente.data.Actividad;
 
+            var idProvincia = InfoCliente.data.idProvincia;
+
             // PROCESO PARA SELECCCIONAR LA PROVINCIA DEL CLIENTE
-            selecProvincia.selectedIndex = InfoCliente.data.idProvincia;
+            selecProvincia.selectedIndex = idProvincia;
 
             // CARGA EL SELECT DE CANTONES CON EL ID DE PROVINCIA
-            let idProvincia = InfoCliente.data.idProvincia;
-            arrCantones = CargaCanton_Fetch(idProvincia);
+            //arrCantones =
+            // CargaCanton_Fetch(idProvincia);
 
             // PROCESO PARA SELECCCIONAR EL CANTON DEL CLIENTE
-            let idCanton = InfoCliente.data.idCanton;
-            SeleccionaCantonCliente(arrCantones, idCanton, selecCanton);
+            idCanton = InfoCliente.data.idCanton;
+            //idCantonSeleccionado =
+            SeleccionaCantonCliente(idCanton, idProvincia);
 
             // CARGA EL SELECT DE DISTRITOS CON EL ID DEL CANTON
-            arrDistritos = CargaDistrito_Fetch(idCanton);
+            // arrDistritos = CargaDistrito_Fetch(idCantonSeleccionado);
 
             // PROCESO PARA SELECCCIONAR EL DISTRITO DEL CLIENTE
-            let idDistrito = InfoCliente.data.idDistrito;
-            SeleccionaDistritoCliente(arrDistritos, idDistrito);
+            var idDistrito = InfoCliente.data.idDistrito;
+            // SeleccionaDistritoCliente(idDistrito, idCantonSeleccionado);
 
+            // main(idDistrito, idCantonSeleccionado)
+            SelecDistriCliente(idDistrito, idCantonSeleccionado)
+            // .then(res => res.json())
+            // .catch(error => console.log(error))
 
             // VALIDA EL REGIMEN
             if (InfoCliente.data.Regimen == "Factura Electrónica") {
@@ -325,24 +263,225 @@ function btnEditCliente() {
   });
 }
 
-function SeleccionaCantonCliente(arrCantones, idCanton, selecCanton) {
-  for (let i = 0; i < arrCantones.length; i++) {
-    if (idCanton == arrCantones[i].Id) {
-      IdCa = i + 1;
-      selecCanton.selectedIndex = IdCa;
-      IdCa = arrCantones[i].Id
-    }
-  }
-  return IdCa;
+function fntDeleteCliente() {
+  // Todos los elementos que tengan la clase
+  var btnDeleteCliente = document.querySelectorAll(".btnDeleteCliente");
+  // Por cada elemento le agregamos un evento click para mostrar el modal
+  btnDeleteCliente.forEach(function (btnDeleteCliente) {
+    btnDeleteCliente.addEventListener("click", function () {
+      // Obtener los datos
+      var idCliente = this.getAttribute("idCliente");
+
+      swal({
+          title: "Deshabilitar Cliente",
+          text: "Realmente quiere Deshabilitar el Cliente?",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Sí, Deshabilitar!",
+          cancelButtonText: "No, cancelar!",
+          closeOnConfirm: false,
+          closeOnCancel: true,
+        },
+        (isConfirm) => {
+          if (isConfirm) {
+            /* Detecta en cual navegador se encuentra el usuario
+                  Si está en chrome o firefox crea un elemento xmlhttprequest
+                  sino crea un objeto activexobjet de microsoft
+             */
+            var request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+            var url = `${base_url}Clientes/deleteClient/`;
+
+            //   Enviamos los datos por medio de ajax
+            request.open("POST", url);
+            request.send(idCliente);
+            request.onreadystatechange = function () {
+              if (request.readyState == 4 && request.status == 200) {
+                var objData = JSON.parse(request.responseText);
+
+                if (objData.status) {
+                  swal("Eliminar!", objData.msg, "success");
+                  tblClientes.ajax.reload(function () {
+                    btnEditCliente();
+                    fntDeleteCliente();
+                  });
+                } else {
+                  swal("Atencion!", objData.msg, "error");
+                }
+              }
+            };
+          }
+        })
+
+
+
+      // swal({
+      //     title: "Deshabilitar Cliente",
+      //     text: "Realmente quiere Deshabilitar el Cliente?",
+      //     type: "warning",
+      //     showCancelButton: true,
+      //     confirmButtonText: "Sí, Deshabilitar!",
+      //     cancelButtonText: "No, cancelar!",
+      //     closeOnConfirm: false,
+      //     closeOnCancel: true,
+      //   },
+      //   (isConfirm) => {
+      //     if (isConfirm) {
+      //       var url = `${base_url}Clientes/deleteClient/${idCliente}`;
+      //       // var json = `{ "idCliente":${idCliente}}`;
+      //       // var json = JSON.stringify({
+      //       //   idCliente: idCliente
+      //       // })
+      //       var json = {
+      //         idCliente: 1
+      //       }
+
+      //       fetch(url, {
+      //           method: 'POST',
+      //           headers: {
+      //             // 'Accept': 'application/json, text/plain, */*',
+      //             'Content-Type': 'application/json'
+      //           },
+      //           // body: JSON.stringify(json),
+      //         })
+      //         .then(res => res.json())
+      //         .then(data => {
+      //           console.log('Success', data)
+      //         })
+      //         .catch(error => console.log(`Error encontrado: ${error}`))
+      //     }
+      //   }
+      // )
+    })
+  })
 }
 
-function SeleccionaDistritoCliente(arrDistritos, idDistrito) {
+async function SeleccionaCantonCliente(idCanton, idProvincia) {
+  const arrCantones = await CargaCanton_Fetch(idProvincia);
+
+  for (let i = 0; i < arrCantones.length; i++) {
+    if (idCanton == arrCantones[i].Id) {
+      encontro = i + 1;
+      selecCanton.selectedIndex = encontro;
+      // selecCanton.options[IdCa].selected = true;
+      idCantonSeleccionado = arrCantones[i].Id;
+      break;
+    }
+  }
+  return await idCantonSeleccionado;
+}
+
+// const main = async (idDistrito, idCantonSeleccionado) => {
+//   try {
+//     const varA = await SelecDistriCliente(idDistrito, idCantonSeleccionado)
+//     return varA
+
+//   } catch (error) {
+//     throw error
+//   }
+// }
+
+const SelecDistriCliente = async (idDistrito, idCantonSeleccionado) => {
+  try {
+    arrDistritos = await CargaDistrito_Fetch(idCantonSeleccionado);
+    idCantonSeleccionado = await BuscarDistriSeleccionado(arrDistritos, idDistrito);
+
+    return idCantonSeleccionado;
+
+  } catch (error) {
+    throw error
+  }
+}
+
+// async function SeleccionaDistritoCliente(idDistrito, idCantonSeleccionado) {
+//   arrDistritos = await CargaDistrito_Fetch(idCantonSeleccionado);
+
+//   idCantonSeleccionado = await selec(arrDistritos, idDistrito);
+//   return idCantonSeleccionado;
+// }
+
+const BuscarDistriSeleccionado = async (arrDistritos, idDistrito) => {
   for (let i = 0; i < arrDistritos.length; i++) {
     if (idDistrito == arrDistritos[i].Id) {
       encontro = i + 1;
       selecDistrito.selectedIndex = encontro;
+      var idDistritoSeleccionado = arrDistritos[i].Id;
+      break;
     }
   }
+  return idDistritoSeleccionado;
+}
+
+// LLENADO DEL SELEC PROVINCIA
+function CargaProvincia() {
+  var Url = base_url + "Clientes/getProvincia";
+  fetch(Url)
+    .then(response => response.json())
+    .then(data => {
+      if (data.status) {
+        selecProvincia.options[0] = new Option("Selecciona una Provincia", "0");
+        arrProvincias = data.data;
+
+        for (let i = 1; i <= arrProvincias.length; i++) {
+          selecProvincia.options[i] = new Option(
+            arrProvincias[i - 1]["NombreProvincia"],
+            arrProvincias[i - 1]["Id"]
+          );
+        }
+      } else {
+        swal("Error", data.msg, "error");
+      }
+    });
+}
+
+// FUNCION FETCH QUE CARGA EL SELECT DE CANTONES
+async function CargaCanton_Fetch(IdProvincia) {
+  resetListaCanton();
+  resetListaDistrito();
+  let Url = `${base_url}Clientes/getCanton/${IdProvincia}`;
+  await fetch(Url)
+    .then(response => response.json())
+    .then(data => {
+      if (data.status) {
+        selecCanton.options[0] = new Option("Selecciona un Cantón", "0");
+        arrCantones = data.data;
+
+        // ASIGNAMOS LOS VALORES AL SELECT DE CANTONES
+        for (let i = 1; i <= arrCantones.length; i++) {
+          selecCanton.options[i] = new Option(
+            arrCantones[i - 1]["NombreCanton"],
+            arrCantones[i - 1]["Id"]
+          );
+        }
+      } else {
+        swal("Error", data.msg, "error");
+      }
+    });
+  return arrCantones;
+}
+
+// FUNCION FETC QUE CARGA EL SELECT DE DISTRITOS
+const CargaDistrito_Fetch = async (idCantonSeleccionado) => {
+  resetListaDistrito();
+  let Url = `${base_url}Clientes/getDistrito/${idCantonSeleccionado}`;
+  await fetch(Url)
+    .then(response => response.json())
+    .then(data => {
+      if (data.status) {
+        selecDistrito.options[0] = new Option("Selecciona un Distrito", "0");
+        arrDistritos = data.data;
+
+        // ASIGNAMOS LOS VALORES AL SELECT DE DISTRITOS
+        for (let i = 1; i <= arrDistritos.length; i++) {
+          selecDistrito.options[i] = new Option(
+            arrDistritos[i - 1]["nombreDistrito"],
+            arrDistritos[i - 1]["Id"]
+          );
+        }
+      } else {
+        swal("Error", data.msg, "error");
+      }
+    });
+  return arrDistritos;
 }
 
 // DESPLIEGA EL MODAL
@@ -368,58 +507,71 @@ function impri(data) {
 
 // ---------------------- FUNCIONES NO USADAS -----------------------------------------------
 // FUNCION QUE LLENA EL COMBO DE DISTRITO AL SELECCIONAR UN CANTON
-function CargaDistrito(idCanton) {
-  var request = window.XMLHttpRequest ?
-    new XMLHttpRequest() :
-    new ActiveXObject("Microsoft.XMLHTTP");
-  var Url = `${base_url}Clientes/getDistrito/${idCanton}`;
-  request.open("GET", Url);
-  request.send();
+// function CargaDistrito(idCanton) {
+//   var request = window.XMLHttpRequest ?
+//     new XMLHttpRequest() :
+//     new ActiveXObject("Microsoft.XMLHTTP");
+//   var Url = `${base_url}Clientes/getDistrito/${idCanton}`;
+//   request.open("GET", Url);
+//   request.send();
 
-  request.onreadystatechange = function () {
-    if (request.readyState == 4 && request.status == 200) {
-      selecDistrito.options[0] = new Option("Selecciona un Distrito", "0");
-      Distritos = JSON.parse(request.responseText);
+//   request.onreadystatechange = function () {
+//     if (request.readyState == 4 && request.status == 200) {
+//       selecDistrito.options[0] = new Option("Selecciona un Distrito", "0");
+//       Distritos = JSON.parse(request.responseText);
 
-      for (let i = 1; i <= Distritos.length; i++) {
-        selecDistrito.options[i] = new Option(
-          Distritos[i - 1]["nombreDistrito"],
-          Distritos[i - 1]["Id"]
-        );
-      }
-    }
-  };
-  return Distritos;
-}
+//       for (let i = 1; i <= Distritos.length; i++) {
+//         selecDistrito.options[i] = new Option(
+//           Distritos[i - 1]["nombreDistrito"],
+//           Distritos[i - 1]["Id"]
+//         );
+//       }
+//     }
+//   };
+//   return Distritos;
+// }
 
 // FUNCION QUE LLENA EL COMBO DE CANTON AL SELECCIONAR UNA PROVINCIA
-function CargaCanton(idProvincia) {
-  // VERIFICAMOS QUE TIPO DE NAVEGADOR UTILIZA EL CLIENTE
-  var request = window.XMLHttpRequest ?
-    new XMLHttpRequest() :
-    new ActiveXObject("Microsoft.XMLHTTP");
+// function CargaCanton(idProvincia) {
+//   // VERIFICAMOS QUE TIPO DE NAVEGADOR UTILIZA EL CLIENTE
+//   var request = window.XMLHttpRequest ?
+//     new XMLHttpRequest() :
+//     new ActiveXObject("Microsoft.XMLHTTP");
 
-  // OBTENEMOS LOS CANTONES ENVIANDO EL ID DE LA PROVINCIA
-  var Url = `${base_url}Clientes/getCanton/${idProvincia}`;
-  request.open("GET", Url, true);
-  request.send();
+//   // OBTENEMOS LOS CANTONES ENVIANDO EL ID DE LA PROVINCIA
+//   var Url = `${base_url}Clientes/getCanton/${idProvincia}`;
+//   request.open("GET", Url, true);
+//   request.send();
 
-  request.onreadystatechange = function () {
-    // VALIDAMOS QUE NOS RETORNE DATOS
-    if (request.readyState == 4 && request.status == 200) {
-      // AGREGAMOS UNA OPCION DEFAULT AL SELECT
-      selecCanton.options[0] = new Option("Selecciona un Cantón", "0");
+//   request.onreadystatechange = function () {
+//     // VALIDAMOS QUE NOS RETORNE DATOS
+//     if (request.readyState == 4 && request.status == 200) {
+//       // AGREGAMOS UNA OPCION DEFAULT AL SELECT
+//       selecCanton.options[0] = new Option("Selecciona un Cantón", "0");
 
-      // ALMACENAMOS LA INFORMACION QUE NOS DA LA CONSULTA A LA BASE DE DATOS
-      Cantones = JSON.parse(request.responseText);
+//       // ALMACENAMOS LA INFORMACION QUE NOS DA LA CONSULTA A LA BASE DE DATOS
+//       Cantones = JSON.parse(request.responseText);
 
-      // ASIGNAMOS LOS VALORES AL SELECT DE CANTONES
-      for (let i = 1; i <= Cantones.length; i++) {
-        selecCanton.options[i] = new Option(
-          Cantones[i - 1]["NombreCanton"],
-          Cantones[i - 1]["Id"]
-        );
-      }
-    }
-  };
-}
+//       // ASIGNAMOS LOS VALORES AL SELECT DE CANTONES
+//       for (let i = 1; i <= Cantones.length; i++) {
+//         selecCanton.options[i] = new Option(
+//           Cantones[i - 1]["NombreCanton"],
+//           Cantones[i - 1]["Id"]
+//         );
+//       }
+//     }
+//   };
+// }
+
+// function SeleccionaCantonCliente(arrCantones, idCanton) {
+//   for (let i = 0; i < arrCantones.length; i++) {
+//     if (idCanton == arrCantones[i].Id) {
+//       IdCa = i + 1;
+//       selecCanton.selectedIndex = IdCa;
+//       // selecCanton.options[IdCa].selected = true;
+//       IdCa = arrCantones[i].Id;
+//       break;
+//     }
+//   }
+//   return IdCa;
+// }

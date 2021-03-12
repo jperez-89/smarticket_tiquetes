@@ -20,6 +20,11 @@ class  Clientes extends Controllers
      public function getProvincia()
      {
           $arrdatos = $this->model->selecProvincias();
+          if (empty($arrdatos)) {
+               $arrdatos = array('status' => false, 'msg' => 'Datos no encontrados');
+          } else {
+               $arrdatos = array('status' => true, 'data' => $arrdatos);
+          }
           echo json_encode($arrdatos, JSON_UNESCAPED_UNICODE);
           die();
      }
@@ -119,6 +124,23 @@ class  Clientes extends Controllers
                $arrResponse = array('status' => false, 'msg' => 'No es posible almacenar los datos.');
           }
           echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+          die();
+     }
+
+     public function deleteClient()
+     {
+          if ($_POST) {
+               $idCliente = intval($_POST['idCliente']);
+               $resquestDelete = $this->model->deleteCliente($idCliente);
+               if ($resquestDelete == 'ok') {
+                    $arrResponse = array('status' => true, 'msg' => 'Cliente deshabilitado.');
+               } elseif ($resquestDelete == 'exist') {
+                    $arrResponse = array('status' => false, 'msg' => 'No es posible deshabilitar el cliente.');
+               } else {
+                    $arrResponse = array('status' => false, 'msg' => 'No es posible eliminar los datos.');
+               }
+               echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+          }
           die();
      }
 }
