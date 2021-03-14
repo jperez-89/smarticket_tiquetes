@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Registro de nuevo producto
-  var frmClientes = document.querySelector("#frmClientes");
+  var frmClientes = document.getElementById("frmClientes");
   if (frmClientes != null) {
     frmClientes.onsubmit = function (e) {
       e.preventDefault();
@@ -106,39 +106,118 @@ document.addEventListener("DOMContentLoaded", function () {
         return false;
       }
 
-      /* Detecta en cual navegador se encuentra el usuario
-                  Si está en chrome o firefox crea un elemento xmlhttprequest
-                  sino crea un objeto activexobjet de microsoft
-             */
-      var request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
-      var Url = base_url + "Clientes/setCliente";
+      var url = `${base_url}Clientes/setCliente`;
       var frmData = new FormData(frmClientes);
+      // impri(frmClientes);
+      // impri(frmData);
 
-      //   Enviamos los datos por medio de ajax
-      request.open("POST", Url, true);
+      var request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+      request.open('POST', url);
       request.send(frmData);
+
       request.onreadystatechange = function () {
         if (request.readyState == 4 && request.status == 200) {
-          var objData = JSON.parse(request.responseText);
-
-          if (objData.status) {
-            // Reseteamos los campos del formulario de productos
-            frmClientes.reset();
-            // Cerramos el modal
-            $("#modalClientes").modal("hide");
-            // Enviamos mensaje de exito
-            swal("Clientes", objData.msg, "success");
-            // Recargamos la tabla
-            tblClientes.ajax.reload(function () {
-              btnEditCliente();
-              fntDeleteCliente()
-            });
-          } else {
-            // Mostramos error
-            swal("Error", objData.msg, "error");
-          }
+          impri('SE GUARDO LA INFO')
         }
-      };
+      }
+
+      // fetch(url, {
+      //     method: 'POST',
+      //     body: JSON.stringify(frmData),
+      //     headers: {
+      //       'Content-Type': 'application/json; charset=UTF-8',
+      //     },
+      //   })
+      //   .then(res => {
+      //     console.log(res.json())
+      //   })
+      // .then(json => {
+      //   console.log('Entro al fetch', json);
+      // })
+      // .catch(error => console.log(error))
+
+
+
+      // if (data.status) {
+      //   // Reseteamos los campos del formulario de productos
+      //   frmClientes.reset();
+      //   // Cerramos el modal
+      //   $("#modalClientes").modal("hide");
+      //   // Enviamos mensaje de exito
+      //   swal("Clientes", data.msg, "success");
+      //   // Recargamos la tabla
+      //   tblClientes.ajax.reload(function () {
+      //     btnEditCliente();
+      //     fntDeleteCliente()
+      //   });
+      // } else {
+      //   // Mostramos error
+      //   swal("Error", data.msg, "error");
+      // }
+
+      //=======================================================
+      // METODO FETCH
+      //========================================================
+
+      // fetch(Url, {
+      //     methods: 'post',
+      //     headers: {
+      //       'Accept': 'application/json, text/plain, */*',
+      //       'Content-Type': 'application/json'
+      //     },
+      //     body: JSON.stringify(frmData)
+      //   })
+      //   .then(response => response.json())
+      //   .then(objData => {
+      //     if (objData.status) {
+      //       // Reseteamos los campos del formulario de productos
+      //       frmClientes.reset();
+      //       // Cerramos el modal
+      //       $("#modalClientes").modal("hide");
+      //       // Enviamos mensaje de exito
+      //       swal("Clientes", objData.msg, "success");
+      //       // Recargamos la tabla
+      //       tblClientes.ajax.reload(function () {
+      //         btnEditCliente();
+      //         fntDeleteCliente()
+      //       });
+      //     } else {
+      //       // Mostramos error
+      //       swal("Error", objData.msg, "error");
+      //     }
+      //   })
+      //   .catch(error => console.log('Error...!! ', error))
+
+      //=======================================================
+      // METODO 
+      //========================================================
+
+      // var request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+      //   Enviamos los datos por medio de ajax
+      // request.open("POST", Url, true);
+      // request.send(frmData);
+      // request.onreadystatechange = function () {
+      //   if (request.readyState == 4 && request.status == 200) {
+      //     var objData = JSON.parse(request.responseText);
+
+      //     if (objData.status) {
+      //       // Reseteamos los campos del formulario de productos
+      //       frmClientes.reset();
+      //       // Cerramos el modal
+      //       $("#modalClientes").modal("hide");
+      //       // Enviamos mensaje de exito
+      //       swal("Clientes", objData.msg, "success");
+      //       // Recargamos la tabla
+      //       tblClientes.ajax.reload(function () {
+      //         btnEditCliente();
+      //         fntDeleteCliente()
+      //       });
+      //     } else {
+      //       // Mostramos error
+      //       swal("Error", objData.msg, "error");
+      //     }
+      //   }
+      // };
     };
   }
 });
@@ -408,7 +487,7 @@ const BuscarDistriSeleccionado = async (arrDistritos, idDistrito) => {
       break;
     }
   }
-  return idDistritoSeleccionado;
+  return await idDistritoSeleccionado;
 }
 
 // LLENADO DEL SELEC PROVINCIA
@@ -461,7 +540,7 @@ async function CargaCanton_Fetch(IdProvincia) {
 
 // FUNCION FETC QUE CARGA EL SELECT DE DISTRITOS
 const CargaDistrito_Fetch = async (idCantonSeleccionado) => {
-  resetListaDistrito();
+  // resetListaDistrito();
   let Url = `${base_url}Clientes/getDistrito/${idCantonSeleccionado}`;
   await fetch(Url)
     .then(response => response.json())
