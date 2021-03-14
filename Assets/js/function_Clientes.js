@@ -108,119 +108,80 @@ document.addEventListener("DOMContentLoaded", function () {
 
       var url = `${base_url}Clientes/setCliente`;
       var frmData = new FormData(frmClientes);
-      // impri(frmClientes);
-      // impri(frmData);
 
-      var request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
-      request.open('POST', url);
-      request.send(frmData);
+      Function_objHttpRequest('POST', url, frmData);
 
-      request.onreadystatechange = function () {
-        if (request.readyState == 4 && request.status == 200) {
-          impri('SE GUARDO LA INFO')
-        }
-      }
+      Function_Fetch(url, 'POST', frmData);
 
-      // fetch(url, {
-      //     method: 'POST',
-      //     body: JSON.stringify(frmData),
-      //     headers: {
-      //       'Content-Type': 'application/json; charset=UTF-8',
-      //     },
-      //   })
-      //   .then(res => {
-      //     console.log(res.json())
-      //   })
-      // .then(json => {
-      //   console.log('Entro al fetch', json);
-      // })
-      // .catch(error => console.log(error))
-
-
-
-      // if (data.status) {
-      //   // Reseteamos los campos del formulario de productos
-      //   frmClientes.reset();
-      //   // Cerramos el modal
-      //   $("#modalClientes").modal("hide");
-      //   // Enviamos mensaje de exito
-      //   swal("Clientes", data.msg, "success");
-      //   // Recargamos la tabla
-      //   tblClientes.ajax.reload(function () {
-      //     btnEditCliente();
-      //     fntDeleteCliente()
-      //   });
-      // } else {
-      //   // Mostramos error
-      //   swal("Error", data.msg, "error");
-      // }
-
-      //=======================================================
-      // METODO FETCH
-      //========================================================
-
-      // fetch(Url, {
-      //     methods: 'post',
-      //     headers: {
-      //       'Accept': 'application/json, text/plain, */*',
-      //       'Content-Type': 'application/json'
-      //     },
-      //     body: JSON.stringify(frmData)
-      //   })
-      //   .then(response => response.json())
-      //   .then(objData => {
-      //     if (objData.status) {
-      //       // Reseteamos los campos del formulario de productos
-      //       frmClientes.reset();
-      //       // Cerramos el modal
-      //       $("#modalClientes").modal("hide");
-      //       // Enviamos mensaje de exito
-      //       swal("Clientes", objData.msg, "success");
-      //       // Recargamos la tabla
-      //       tblClientes.ajax.reload(function () {
-      //         btnEditCliente();
-      //         fntDeleteCliente()
-      //       });
-      //     } else {
-      //       // Mostramos error
-      //       swal("Error", objData.msg, "error");
-      //     }
-      //   })
-      //   .catch(error => console.log('Error...!! ', error))
-
-      //=======================================================
-      // METODO 
-      //========================================================
-
-      // var request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
-      //   Enviamos los datos por medio de ajax
-      // request.open("POST", Url, true);
-      // request.send(frmData);
-      // request.onreadystatechange = function () {
-      //   if (request.readyState == 4 && request.status == 200) {
-      //     var objData = JSON.parse(request.responseText);
-
-      //     if (objData.status) {
-      //       // Reseteamos los campos del formulario de productos
-      //       frmClientes.reset();
-      //       // Cerramos el modal
-      //       $("#modalClientes").modal("hide");
-      //       // Enviamos mensaje de exito
-      //       swal("Clientes", objData.msg, "success");
-      //       // Recargamos la tabla
-      //       tblClientes.ajax.reload(function () {
-      //         btnEditCliente();
-      //         fntDeleteCliente()
-      //       });
-      //     } else {
-      //       // Mostramos error
-      //       swal("Error", objData.msg, "error");
-      //     }
-      //   }
-      // };
-    };
+    }; // FIN DEL ONSUBMIT
   }
 });
+
+//=======================================================
+// METODO FETCH
+//========================================================
+const Function_Fetch = (url, method, data) => {
+  fetch(url, {
+      methods: method,
+      headers: {
+        // 'Accept': 'application/json, text/plain, */*',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data),
+    })
+    .then(response => response.json())
+    .then(objData => {
+      if (objData.status) {
+        // Reseteamos los campos del formulario de productos
+        frmClientes.reset();
+        // Cerramos el modal
+        $("#modalClientes").modal("hide");
+        // Enviamos mensaje de exito
+        swal("Clientes", objData.msg, "success");
+        // Recargamos la tabla
+        tblClientes.ajax.reload(function () {
+          btnEditCliente();
+          fntDeleteCliente()
+        });
+      } else {
+        // Mostramos error
+        swal("Error", objData.msg, "error");
+      }
+    })
+    .catch(error => alert('Error...!! ' + error))
+}
+
+//=======================================================
+// METODO IMPLEMENTANDO EL OBJETO XMLHTTPREQUEST
+//========================================================
+const Function_objHttpRequest = (method, url, data) => {
+  var request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+  request.open(method, url);
+  request.send(data);
+
+  request.onreadystatechange = function () {
+    if (request.readyState == 4 && request.status == 200) {
+      var objData = JSON.parse(request.responseText);
+      // impri(objData);
+      if (objData.status) {
+        // Reseteamos los campos del formulario de productos
+        frmClientes.reset();
+        // Cerramos el modal
+        $("#modalClientes").modal("hide");
+        // Enviamos mensaje de exito
+        swal("Clientes", objData.msg, "success");
+        // Recargamos la tabla
+        tblClientes.ajax.reload(function () {
+          btnEditCliente();
+          fntDeleteCliente()
+        });
+      } else {
+        // Mostramos error
+        swal("Error", objData.msg, "error");
+      }
+    }
+  };
+}
 
 // RESETEA EL SELECT DE CANTONES
 function resetListaCanton() {
