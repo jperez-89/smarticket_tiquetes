@@ -5,7 +5,7 @@ var selecDistrito = document.getElementById("selecDistrito");
 
 document.addEventListener("DOMContentLoaded", function () {
   // Mostrar los datos en la tabla
-  var tblClientes = $("#tblClientes").DataTable({
+  tblClientes = $("#tblClientes").DataTable({
     aProcessing: true,
     aServerSide: true,
     sDom: "Bfrtip",
@@ -69,9 +69,9 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Registro de nuevo producto
-  var frmClientes = document.getElementById("frmClientes");
+  var frmClientes = document.querySelector("#frmClientes");
   if (frmClientes != null) {
-    frmClientes.onsubmit = function (e) {
+    frmClientes.onsubmit = async (e) => {
       e.preventDefault();
 
       // Extraemos los datos
@@ -104,14 +104,63 @@ document.addEventListener("DOMContentLoaded", function () {
       ) {
         swal("Atención", "Todos los campos son obligatorios", "error");
         return false;
+      } else {
+        var frmData = new FormData(frmClientes);
+
+        for (let [name, value] of frmData) {
+          data += `${name}: ${value}`
+        }
       }
 
       var url = `${base_url}Clientes/setCliente`;
-      var frmData = new FormData(frmClientes);
+      // var frvalueData = new FormData(frmClientes);
+      // var frmData = $(frmClientes).serialize();
 
-      Function_objHttpRequest('POST', url, frmData);
+      // let response = await fetch(url, {
+      //   method: 'POST',
+      //   body: frmData
+      // });
 
-      Function_Fetch(url, 'POST', frmData);
+      // let result = await response.json();
+
+      // alert(result.msg);
+
+      // for (let [name, value] of frmData) {
+      //   alert(`${name} = ${value}`); // key1 = value1, luego key2 = value2
+      // }
+
+      // $.post(url, {
+      //     data: frmData
+      //   })
+      //   .done(function (data) {
+      //     console.log(data);
+      //   });
+
+      // //se utiliza $.ajax(), a la cual se le pasa un objeto {}, con la información
+      // $.ajax({
+      //   type: "POST", // la variable type guarda el tipo de la peticion GET,POST,..
+      //   url: "http://ruta", //url guarda la ruta hacia donde se hace la peticion
+      //   data: {
+      //     nombre: "pepe",
+      //     edad: 10
+      //   }, // data recive un objeto con la informacion que se enviara al servidor
+      //   success: function (datos) { //success es una funcion que se utiliza si el servidor retorna informacion
+      //     console.log(datos.promedio)
+      //   },
+      //   dataType: dataType // El tipo de datos esperados del servidor. Valor predeterminado: Intelligent Guess (xml, json, script, text, html).
+      // })
+
+      // fetch(url, {
+      //     method: 'post',
+      //     body: JSON.stringify(frmData)
+      //   })
+      //   .then(res => res.json())
+      //   .then(datos => {
+      //     console.log(datos)
+      //   })
+
+      // Function_objHttpRequest('POST', url, frmData);
+      Function_Fetch(url, 'POST', data)
 
     }; // FIN DEL ONSUBMIT
   }
@@ -120,29 +169,31 @@ document.addEventListener("DOMContentLoaded", function () {
 //=======================================================
 // METODO FETCH
 //========================================================
-const Function_Fetch = (url, method, data) => {
-  fetch(url, {
+const Function_Fetch = async (url, method, data) => {
+  data = JSON.stringify(data)
+  const promise = await fetch(url, {
       methods: method,
       headers: {
-        // 'Accept': 'application/json, text/plain, */*',
+        'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(data),
+      body: data
     })
     .then(response => response.json())
     .then(objData => {
       if (objData.status) {
-        // Reseteamos los campos del formulario de productos
-        frmClientes.reset();
-        // Cerramos el modal
-        $("#modalClientes").modal("hide");
-        // Enviamos mensaje de exito
-        swal("Clientes", objData.msg, "success");
-        // Recargamos la tabla
-        tblClientes.ajax.reload(function () {
-          btnEditCliente();
-          fntDeleteCliente()
-        });
+        return promise
+        // // Reseteamos los campos del formulario de productos
+        // frmClientes.reset();
+        // // Cerramos el modal
+        // $("#modalClientes").modal("hide");
+        // // Enviamos mensaje de exito
+        // swal("Clientes", objData.msg, "success");
+        // // Recargamos la tabla
+        // tblClientes.ajax.reload(function () {
+        //   btnEditCliente();
+        //   fntDeleteCliente()
+        // });
       } else {
         // Mostramos error
         swal("Error", objData.msg, "error");
@@ -154,34 +205,34 @@ const Function_Fetch = (url, method, data) => {
 //=======================================================
 // METODO IMPLEMENTANDO EL OBJETO XMLHTTPREQUEST
 //========================================================
-const Function_objHttpRequest = (method, url, data) => {
-  var request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
-  request.open(method, url);
-  request.send(data);
+// const Function_objHttpRequest = (method, url, data) => {
+//   var request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+//   request.open(method, url);
+//   request.send(data);
 
-  request.onreadystatechange = function () {
-    if (request.readyState == 4 && request.status == 200) {
-      var objData = JSON.parse(request.responseText);
-      // impri(objData);
-      if (objData.status) {
-        // Reseteamos los campos del formulario de productos
-        frmClientes.reset();
-        // Cerramos el modal
-        $("#modalClientes").modal("hide");
-        // Enviamos mensaje de exito
-        swal("Clientes", objData.msg, "success");
-        // Recargamos la tabla
-        tblClientes.ajax.reload(function () {
-          btnEditCliente();
-          fntDeleteCliente()
-        });
-      } else {
-        // Mostramos error
-        swal("Error", objData.msg, "error");
-      }
-    }
-  };
-}
+//   request.onreadystatechange = function () {
+//     if (request.readyState == 4 && request.status == 200) {
+//       var objData = JSON.parse(request.responseText);
+//       // impri(objData);
+//       if (objData.status) {
+//         // Reseteamos los campos del formulario de productos
+//         frmClientes.reset();
+//         // Cerramos el modal
+//         $("#modalClientes").modal("hide");
+//         // Enviamos mensaje de exito
+//         swal("Clientes", objData.msg, "success");
+//         // Recargamos la tabla
+//         tblClientes.ajax.reload(function () {
+//           btnEditCliente();
+//           fntDeleteCliente()
+//         });
+//       } else {
+//         // Mostramos error
+//         swal("Error", objData.msg, "error");
+//       }
+//     }
+//   };
+// }
 
 // RESETEA EL SELECT DE CANTONES
 function resetListaCanton() {
