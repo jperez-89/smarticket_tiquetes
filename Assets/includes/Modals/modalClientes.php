@@ -41,7 +41,7 @@
                                              </div>
                                              <div class="form-group">
                                                   <label for="selecCanton" class="control-label">Cantón</label>
-                                                  <select onchange="CargaDistrito_Fetch(this.value);" class="form-control" name="  " id="selecCanton">
+                                                  <select onchange="CargaDistrito_Fetch(this.value);" class="form-control" name="selecCanton" id="selecCanton">
                                                   </select>
                                              </div>
                                              <div class="form-group">
