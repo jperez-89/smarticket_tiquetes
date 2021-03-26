@@ -59,11 +59,11 @@ class  Clientes extends Controllers
 
           for ($i = 0; $i < count($arrdatos); $i++) {
                if ($arrdatos[$i]['Status'] == 1) {
+                    // ESTADO
                     $arrdatos[$i]['Status'] = '<span class="badge badge-success">Activo</span>';
-               } else {
-                    $arrdatos[$i]['Status'] = '<span class="badge badge-danger">Inactivo</span>';
-               }
-               $arrdatos[$i]['options'] = '<div class="p-0 m-0">
+
+                    // ACCIONES
+                    $arrdatos[$i]['options'] = '<div class="p-0 m-0">
                                              <button idCliente="' . $arrdatos[$i]['Id'] . '" class="btnEditCliente btn btn-sm btn-primary">
                                                   <i class="fas fa-pencil-alt"></i>
                                              </button>
@@ -71,6 +71,20 @@ class  Clientes extends Controllers
                                                   <i class="fas fa-trash"></i>
                                              </button>
                                         </div>';
+               } else {
+                    // ESTADO
+                    $arrdatos[$i]['Status'] = '<span class="badge badge-danger">Inactivo</span>';
+
+                    // ACCIONES
+                    $arrdatos[$i]['options'] = '<div class="p-0 m-0">
+                                             <button idCliente="' . $arrdatos[$i]['Id'] . '" class="btnEnableCliente btn btn-sm btn-warning">
+                                                  <i class="fas fa-sync-alt"></i>
+                                             </button>
+                                             <button idCliente="' . $arrdatos[$i]['Id'] . '"disabled=true class="btnDeleteCliente btn btn-sm btn-danger">
+                                                  <i class="fas fa-trash"></i>
+                                             </button>
+                                        </div>';
+               }
           }
           echo json_encode($arrdatos, JSON_UNESCAPED_UNICODE);
           die();
@@ -91,56 +105,86 @@ class  Clientes extends Controllers
           die();
      }
 
+     public function getCantClients()
+     {
+          $arrdatos = $this->model->selectCantClients();
+
+          echo json_encode($arrdatos, JSON_UNESCAPED_UNICODE);
+          die();
+     }
+
      public function setCliente()
      {
-          $idCliente = intval($_POST['idCliente']);
-          $identificacionCliente = strClean($_POST['txtIdentificacion']);
-          $nombreCliente = strClean($_POST['txtNombre']);
-          $EmailCliente = strClean($_POST['txtEmail']);
-          $telefonoCliente = strClean($_POST['txtTelefono']);
-          $idDistrito = intval($_POST['selecDistrito']);
-          $DireccionCliente = strClean($_POST['txtDireccion']);
-          $actividadCliente = strClean($_POST['txtActividad']);
-          $regimenCliente = strClean($_POST['selecRegimen']);
-          $Status = intval($_POST['selecEstado']);
+          try {
+               $idCliente = intval($_POST['idCliente']);
+               $identificacionCliente = strClean($_POST['txtIdentificacion']);
+               $nombreCliente = strClean($_POST['txtNombre']);
+               $emailCliente = strClean($_POST['txtEmail']);
+               $telefonoCliente = strClean($_POST['txtTelefono']);
+               $idDistrito = intval($_POST['selecDistrito']);
+               $direccionCliente = strClean($_POST['txtDireccion']);
+               $actividadCliente = strClean($_POST['txtActividad']);
+               $regimenCliente = strClean($_POST['selecRegimen']);
+               $Status = intval($_POST['selecEstado']);
+               // PrintData('CONTROLADOR. CEDULA.. ' . $idCliente);
+               // PrintData('CONTROLADOR. DISTRITO.. ' . $idDistrito);
 
-          if ($idCliente == "") {
-               $request_Cliente = $this->model->insertCliente($identificacionCliente, $nombreCliente, $telefonoCliente, $EmailCliente, $idDistrito, $DireccionCliente, $actividadCliente, $regimenCliente, $Status);
-               $option = 1;
-          } else {
-               $request_Cliente = $this->model->updateCliente($idCliente, $nombreCliente, $telefonoCliente, $EmailCliente, $idDistrito, $DireccionCliente, $actividadCliente, $regimenCliente, $Status);
-               $option = 2;
-          }
-
-          if ($request_Cliente > 0) {
-               if ($option == 1) {
-                    $arrResponse = array('status' => true, 'msg' => 'Datos guardados.');
+               if ($idCliente == 0) {
+                    $request_Cliente = $this->model->insertCliente($identificacionCliente, $nombreCliente, $telefonoCliente, $emailCliente, $idDistrito, $direccionCliente, $actividadCliente, $regimenCliente, $Status);
+                    $option = 1;
                } else {
-                    $arrResponse = array('status' => true, 'msg' => 'Datos actualizados.');
+                    $request_Cliente = $this->model->updateCliente($idCliente, $nombreCliente, $telefonoCliente, $emailCliente, $idDistrito, $direccionCliente, $actividadCliente, $regimenCliente, $Status);
+                    $option = 2;
                }
-          } elseif ($request_Cliente == 'exist') {
-               $arrResponse = array('status' => false, 'msg' => 'Atencion! El producto ya existe.');
+
+               if ($request_Cliente > 0) {
+                    if ($option == 1) {
+                         $arrResponse = array('status' => true, 'msg' => 'Datos guardados.');
+                    } else {
+                         $arrResponse = array('status' => true, 'msg' => 'Datos actualizados.');
+                    }
+               } elseif ($request_Cliente == 'exist') {
+                    $arrResponse = array('status' => false, 'msg' => 'Atencion! El producto ya existe.');
+               } else {
+                    $arrResponse = array('status' => false, 'msg' => 'No es posible almacenar los datos.');
+               }
+
+               echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+               die();
+          } catch (\Throwable $th) {
+               throw $th;
+          }
+     }
+
+     public function deleteClient()
+     {
+          $idCliente = intval($_POST['idCliente']);
+          $resquestDelete = $this->model->deleteCliente($idCliente);
+
+          if ($resquestDelete == 'ok') {
+               $arrResponse = array('status' => true, 'msg' => 'Cliente deshabilitado.');
+          } elseif ($resquestDelete == 'exist') {
+               $arrResponse = array('status' => false, 'msg' => 'No es posible deshabilitar el cliente.');
           } else {
-               $arrResponse = array('status' => false, 'msg' => 'No es posible almacenar los datos.');
+               $arrResponse = array('status' => false, 'msg' => 'No es posible eliminar los datos.');
           }
           echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
           die();
      }
 
-     public function deleteClient()
+     public function enableClient()
      {
-          if ($_POST) {
-               $idCliente = intval($_POST['idCliente']);
-               $resquestDelete = $this->model->deleteCliente($idCliente);
-               if ($resquestDelete == 'ok') {
-                    $arrResponse = array('status' => true, 'msg' => 'Cliente deshabilitado.');
-               } elseif ($resquestDelete == 'exist') {
-                    $arrResponse = array('status' => false, 'msg' => 'No es posible deshabilitar el cliente.');
-               } else {
-                    $arrResponse = array('status' => false, 'msg' => 'No es posible eliminar los datos.');
-               }
-               echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+          $idCliente = intval($_POST['idCliente']);
+          $resquestDelete = $this->model->enableCliente($idCliente);
+
+          if ($resquestDelete == 'ok') {
+               $arrResponse = array('status' => true, 'msg' => 'Cliente Habilitado.');
+          } elseif ($resquestDelete == 'exist') {
+               $arrResponse = array('status' => false, 'msg' => 'No es posible habilitar el cliente.');
+          } else {
+               $arrResponse = array('status' => false, 'msg' => 'No es posible eliminar los datos.');
           }
+          echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
           die();
      }
 }
