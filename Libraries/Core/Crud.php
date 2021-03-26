@@ -9,18 +9,23 @@ class Crud extends Conexion
      public function __construct()
      {
           // Hacemos una instancia de la clase conecion
-          $this->conex = new Conexion();
-          // Obtenemos el enlace
-          $this->cone = $this->conex->conect();
+          $this->conect = new Conexion();
+
+          // Obtenemos el instance
+          $this->cone = $this->conect->getConection();
      }
 
      // -----------------> METODO PARA INSERTAR REGISTROS <-----------------
      public function Insert_Register(string $query, array $arrValues)
      {
+          $this->stringQuery = $query;
+          $this->arrValues = $arrValues;
+
           // Preparamos el query
-          $insert = $this->cone->prepare($query);
+          $insert = $this->cone->prepare($this->stringQuery);
+
           // Ejecutamos la sentencia
-          $result = $insert->execute($arrValues);
+          $result = $insert->execute($this->arrValues);
 
           // Validamos si se realizo
           if ($result) {
@@ -37,10 +42,13 @@ class Crud extends Conexion
      {
           // Preparamos el query
           $result = $this->cone->prepare($query);
+
           // Ejecutamos
           $result->execute();
+
           // Asociamos los valores devueltos
           $data = $result->fetch(PDO::FETCH_ASSOC);
+
           return $data;
      }
 
@@ -51,8 +59,6 @@ class Crud extends Conexion
           $result = $this->cone->prepare($this->stringQuery);
           $result->execute();
           $data = $result->fetchall(PDO::FETCH_ASSOC);
-          $result = null;
-          $this->cone = null;
           return $data;
      }
 
@@ -71,7 +77,9 @@ class Crud extends Conexion
      {
           $this->stringQuery = $query;
           $this->arrValues = $arrValues;
-          
+          // PrintData('CRUD..array.');
+          // PrintArray($this->arrValues);
+
           $update = $this->cone->prepare($this->stringQuery);
           $result = $update->execute($this->arrValues);
           return $result;
