@@ -25,7 +25,7 @@
                     <a href="<?= base_url(); ?>clientes"><i class="icon fas fa-people-carry fa-3x"></i></a>
                     <div class="info">
                          <h4>Clientes</h4>
-                         <p><b>100</b></p>
+                         <p> <b id="cantClientes"></b> </p>
                     </div>
                </div>
           </div>
