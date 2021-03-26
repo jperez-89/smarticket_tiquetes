@@ -12,7 +12,7 @@
                     <div class="tile">
                          <div class="tile-body">
                               <form id="frmClientes" name="frmClientes">
-                                   <input type="hidden" name="idCliente" id="idCliente" value="">
+                                   <input type="hidden" name="idCliente" id="idCliente" value="0">
                                    <div class="row">
                                         <div class="col-md-6">
                                              <div class="form-group">
@@ -71,7 +71,7 @@
                                                   </select>
                                              </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div id="lstEstado" class="col-md-4">
                                              <div class="form-group">
                                                   <label for="selecEstado" class="control-label">Estado</label>
                                                   <select class="form-control" name="selecEstado" id="selecEstado">
