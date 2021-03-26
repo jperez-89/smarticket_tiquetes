@@ -45,6 +45,13 @@ class ClientesModel extends Crud
           return $resquest;
      }
 
+     public function selectCantClients()
+     {
+          $sql = "SELECT count(id) as Cantidad FROM clientes";
+          $resquest = $this->get_CountRegister($sql);
+          return $resquest;
+     }
+
      public function insertCliente(string $identificacionCliente, string $nombreCliente, string $telefonoCliente, string $emailCliente, int $idDistrito, string $direccionCliente, string $actividadCliente, string $regimenCliente, int $Status)
      {
           $return = "";
@@ -57,13 +64,14 @@ class ClientesModel extends Crud
           $this->actividadCliente = $actividadCliente;
           $this->regimenCliente = $regimenCliente;
           $this->Status = $Status;
+          // PrintData('MODELO...' . $identificacionCliente);
 
           // Validamos si existe el producto
           $sql = "SELECT * FROM clientes WHERE Identificacion = '$this->identificacionCliente'";
           $resquest = $this->get_AllRegister($sql);
 
           if (empty($resquest)) {
-               $query_insert = "INSERT INTO clientes(Identificacion, Nombre, Telefono, Email, idDistrito, Direccion, Actividad, Regimen, Status) VALUES(?,?,?,?,?,?,?,?,?)";
+               $query_insert = "INSERT INTO clientes (Identificacion, Nombre, Telefono, Email, idDistrito, Direccion, Actividad, Regimen, Status) VALUES(?,?,?,?,?,?,?,?,?)";
                $arrData = array($this->identificacionCliente, $this->nombreCliente, $this->telefonoCliente, $this->emailCliente, $this->idDistrito, $this->direccionCliente, $this->actividadCliente, $this->regimenCliente, $this->Status);
                $resquest_insert = $this->Insert_Register($query_insert, $arrData);
                $return = $resquest_insert;
@@ -86,11 +94,15 @@ class ClientesModel extends Crud
           $this->Status = $Status;
 
           // Validamos si existe el producto
-          $sql = "SELECT * FROM clientes WHERE Nombre = '$this->nombreCliente' AND Id != $this->idCliente";
+          $sql = "SELECT * FROM clientes WHERE Id = $this->idCliente";
           $resquest = $this->get_AllRegister($sql);
+
+          // PrintData('MODELO...datos ');
+          // PrintData($resquest);
 
           if (!empty($resquest)) {
                $query_update = "UPDATE clientes SET Nombre = ?, Telefono = ?, Email = ?, idDistrito = ?, Direccion = ?, Actividad = ?, Regimen = ?, Status = ? WHERE Id = $this->idCliente";
+               // PrintData('MODELO..QUERY ' . $query_update);
 
                $arrData = array($this->nombreCliente, $this->telefonoCliente, $this->emailCliente, $this->idDistrito, $this->direccionCliente, $this->actividadCliente, $this->regimenCliente, $this->Status);
 
@@ -110,6 +122,27 @@ class ClientesModel extends Crud
           if (!empty($resquest)) {
                $sql = "UPDATE clientes SET Status = ? WHERE Id = $this->idCliente";
                $arrData = array(0);
+               $resquest = $this->update_Register($sql, $arrData);
+               if ($resquest) {
+                    $resquest = "ok";
+               } else {
+                    $resquest = "error";
+               }
+          } else {
+               $resquest = "exist";
+          }
+          return $resquest;
+     }
+
+     public function enableCliente(int $idCliente)
+     {
+          $this->idCliente = $idCliente;
+          $sql = "SELECT * FROM clientes WHERE Id = $this->idCliente";
+          $resquest = $this->get_OneRegister($sql);
+
+          if (!empty($resquest)) {
+               $sql = "UPDATE clientes SET Status = ? WHERE Id = $this->idCliente";
+               $arrData = array(1);
                $resquest = $this->update_Register($sql, $arrData);
                if ($resquest) {
                     $resquest = "ok";
