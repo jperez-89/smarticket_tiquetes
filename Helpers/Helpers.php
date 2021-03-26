@@ -32,13 +32,20 @@ function ShowModal(string $nameModal, $data = "")
 }
 
 // Muestra informacion formateada
-function ObjFormat($data)
+function PrintData($data)
 {
      $format = print_r('<pre>');
      $format .= print_r($data);
      $format .= print_r('</pre>');
 
      return $format;
+}
+
+function PrintArray($array)
+{
+     for ($i = 0; $i < count($array); $i++) {
+          echo $i . ' - ' . $array[$i] . '<br />';
+     }
 }
 
 // Evitar inyection
