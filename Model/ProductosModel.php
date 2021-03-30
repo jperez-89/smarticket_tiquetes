@@ -56,6 +56,7 @@ class ProductosModel extends Crud
           if (empty($resquest)) {
                $query_insert = "INSERT INTO productos(name, price, stock, description, measure, state) VALUES(?,?,?,?,?,?)";
                $arrData = array($this->nombre, $this->precio, $this->stock, $this->descripcion, $this->medida, $this->state);
+
                $resquest_insert = $this->Insert_Register($query_insert, $arrData);
                $return = $resquest_insert;
           } else {
@@ -64,7 +65,7 @@ class ProductosModel extends Crud
           return $return;
      }
 
-     public function updateProducto(int $idProducto, string $nombre, int $precio, int $stock, string $descripcion, string $medida, int $state)
+     public function updateProducto(int $idProducto, string $nombre, int $precio, int $stock, string $descripcion, string $medida)
      {
           $this->idProducto = $idProducto;
           $this->nombre = $nombre;
@@ -72,14 +73,15 @@ class ProductosModel extends Crud
           $this->stock = $stock;
           $this->descripcion = $descripcion;
           $this->medida = $medida;
-          $this->state = $state;
+          // $this->state = $state;
 
           $sql = "SELECT * FROM productos WHERE Id = $this->idProducto";
           $resquest = $this->get_AllRegister($sql);
 
-          if (empty($resquest)) {
-               $query_update = "UPDATE productos SET name = ?, price = ?, stock = ?, description = ?, measure = ?, state = ? WHERE id = $this->idProducto";
-               $arrData = array($this->nombre, $this->precio, $this->stock, $this->descripcion, $this->medida, $this->state);
+          if (!empty($resquest)) {
+               $query_update = "UPDATE productos SET name = ?, price = ?, stock = ?, description = ?, measure = ? WHERE id = $this->idProducto";
+               $arrData = array($this->nombre, $this->precio, $this->stock, $this->descripcion, $this->medida);
+
                $resquest = $this->update_Register($query_update, $arrData);
           } else {
                $resquest = "exist";
@@ -96,6 +98,27 @@ class ProductosModel extends Crud
           if (!empty($resquest)) {
                $sql = "UPDATE productos SET state = ? WHERE id = $this->idProducto";
                $arrData = array(0);
+               $resquest = $this->update_Register($sql, $arrData);
+               if ($resquest) {
+                    $resquest = "ok";
+               } else {
+                    $resquest = "error";
+               }
+          } else {
+               $resquest = "exist";
+          }
+          return $resquest;
+     }
+
+     public function enableProduct(int $idProducto)
+     {
+          $this->idProducto = $idProducto;
+          $sql = "SELECT * FROM productos WHERE id = $this->idProducto";
+          $resquest = $this->get_OneRegister($sql);
+
+          if (!empty($resquest)) {
+               $sql = "UPDATE productos SET state = ? WHERE id = $this->idProducto";
+               $arrData = array(1);
                $resquest = $this->update_Register($sql, $arrData);
                if ($resquest) {
                     $resquest = "ok";
