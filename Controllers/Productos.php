@@ -24,17 +24,27 @@ class  Productos extends Controllers
           for ($i = 0; $i < count($arrdatos); $i++) {
                if ($arrdatos[$i]['state'] == 1) {
                     $arrdatos[$i]['state'] = '<span class="badge badge-success">Activo</span>';
-               } else {
-                    $arrdatos[$i]['state'] = '<span class="badge badge-danger">Inactivo</span>';
-               }
-               $arrdatos[$i]['options'] = '<div class="p-0 m-0">
-                                             <button idProducto="' . $arrdatos[$i]['id'] . '" class="btnEditProducto btn btn-sm btn-primary">
+
+                    $arrdatos[$i]['options'] = '<div class="p-0 m-0">
+                                             <button idProducto="' . $arrdatos[$i]['id'] . '" onClick="fntEditProduct(' . $arrdatos[$i]['id'] . ')" class=" btn btn-sm btn-primary">
                                                   <i class="fas fa-pencil-alt"></i>
                                              </button>
-                                             <button idProducto="' . $arrdatos[$i]['id'] . '" class="btnDeleteProducto btn btn-sm btn-danger">
+                                             <button idProducto="' . $arrdatos[$i]['id'] . '" onClick="fntDeleteProduct(' . $arrdatos[$i]['id'] . ')" class="btn btn-sm btn-danger">
                                                   <i class="fas fa-trash"></i>
                                              </button>
                                         </div>';
+               } else {
+                    $arrdatos[$i]['state'] = '<span class="badge badge-danger">Inactivo</span>';
+
+                    $arrdatos[$i]['options'] = '<div class="p-0 m-0">
+                                             <button idProducto="' . $arrdatos[$i]['id'] . '" onClick="fntEnableProduct(' . $arrdatos[$i]['id'] . ')" class="btn btn-sm btn-warning">
+                                                  <i class="fas fa-sync-alt"></i>
+                                             </button>
+                                             <button idProducto="' . $arrdatos[$i]['id'] . '"disabled=true class="btn btn-sm btn-danger">
+                                                  <i class="fas fa-trash"></i>
+                                             </button>
+                                        </div>';
+               }
           }
           echo json_encode($arrdatos, JSON_UNESCAPED_UNICODE);
           die();
@@ -53,6 +63,7 @@ class  Productos extends Controllers
           $idProducto = intval(strClean($idProducto));
           if ($idProducto > 0) {
                $arrdatos = $this->model->selectProducto($idProducto);
+
                if (empty($arrdatos)) {
                     $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
                } else {
@@ -71,15 +82,13 @@ class  Productos extends Controllers
           $StockProducto = intval($_POST['txtStock']);
           $DescripcionProducto = strClean($_POST['txtDescripcion']);
           $MedidaProducto = strClean($_POST['selecMedida']);
-          $state = strClean($_POST['selecEstado']);;
+          $state = strClean($_POST['selecEstado']);
 
-          // $request_Producto = $this->model->insertProducto($nombreProducto, $PrecioProducto, $StockProducto, $DescripcionProducto, $MedidaProducto, $state);
-
-          if ($idProducto == "") {
+          if ($idProducto == '0') {
                $request_Producto = $this->model->insertProducto($nombreProducto, $PrecioProducto, $StockProducto, $DescripcionProducto, $MedidaProducto, $state);
                $option = 1;
           } else {
-               $request_Producto = $this->model->updateProducto($idProducto, $nombreProducto, $PrecioProducto, $StockProducto, $DescripcionProducto, $MedidaProducto, $state);
+               $request_Producto = $this->model->updateProducto($idProducto, $nombreProducto, $PrecioProducto, $StockProducto, $DescripcionProducto, $MedidaProducto);
                $option = 2;
           }
 
@@ -104,10 +113,29 @@ class  Productos extends Controllers
           if ($_POST) {
                $idProducto = intval($_POST['idProducto']);
                $resquestDelete = $this->model->deleteProducto($idProducto);
+
                if ($resquestDelete == 'ok') {
                     $arrResponse = array('status' => true, 'msg' => 'Datos eliminados.');
                } elseif ($resquestDelete == 'exist') {
                     $arrResponse = array('status' => false, 'msg' => 'No es posible eliminar el producto, aún tienes disponible.');
+               } else {
+                    $arrResponse = array('status' => false, 'msg' => 'No es posible eliminar los datos.');
+               }
+               echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+          }
+          die();
+     }
+
+     public function enableProduct()
+     {
+          if ($_POST) {
+               $idProducto = intval($_POST['idProducto']);
+               $resquestDelete = $this->model->enableProduct($idProducto);
+
+               if ($resquestDelete == 'ok') {
+                    $arrResponse = array('status' => true, 'msg' => 'Producto Habilitado.');
+               } elseif ($resquestDelete == 'exist') {
+                    $arrResponse = array('status' => false, 'msg' => 'No es posible habilitar el producto');
                } else {
                     $arrResponse = array('status' => false, 'msg' => 'No es posible eliminar los datos.');
                }
