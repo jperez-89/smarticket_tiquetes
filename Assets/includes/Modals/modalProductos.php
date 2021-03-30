@@ -41,7 +41,7 @@
                                                        <option value="UNIDAD">UNIDAD</option>
                                                   </select>
                                              </div>
-                                             <div class="form-group">
+                                             <div class="form-group" id="lstProducts">
                                                   <label for="selecEstado" class="control-label">Estado</label>
                                                   <select class="form-control" name="selecEstado" id="selecEstado">
                                                        <option value="1">Activo</option>
