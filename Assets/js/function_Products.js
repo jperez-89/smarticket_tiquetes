@@ -96,205 +96,302 @@ document.addEventListener("DOMContentLoaded", function () {
         return false;
       }
 
-      /* Detecta en cual navegador se encuentra el usuario
-                  Si está en chrome o firefox crea un elemento xmlhttprequest
-                  sino crea un objeto activexobjet de microsoft
-             */
-      var request = window.XMLHttpRequest ?
-        new XMLHttpRequest() :
-        new ActiveXObject("Microsoft.XMLHTTP");
+      const url = `${base_url}Productos/setProducto`;
+      const frmData = new FormData(this);
 
-      var ajaxUrl = `${base_url}Productos/setProducto`;
-      var frmData = new FormData(frmProducto);
+      const response = fnt_Fetch(url, 'post', frmData)
+      response.then(objData => {
+        if (objData.status) {
+          // Reseteamos los campos del formulario de productos
+          frmProducto.reset();
 
-      //   Enviamos los datos por medio de ajax
-      request.open("POST", ajaxUrl, true);
-      request.send(frmData);
-      request.onreadystatechange = function () {
-        if (request.readyState == 4 && request.status == 200) {
-          var objData = JSON.parse(request.responseText);
+          // Cerramos el modal
+          $("#modalProductos").modal("hide");
 
-          if (objData.status) {
-            // Reseteamos los campos del formulario de productos
-            frmProducto.reset();
-            // Cerramos el modal
-            $("#modalProductos").modal("hide");
-            // Enviamos mensaje de exito
-            swal("Productos", objData.msg, "success");
-            // Recargamos la tabla
-            tableProductos.ajax.reload(function () {
-              fntEditProducto();
-              fntDeleteProducto();
-            });
-          } else {
-            // Mostramos error
-            swal("Error", objData.msg, "error");
-          }
+          // Enviamos mensaje de exito
+          swal("Productos", objData.msg, "success");
+
+          // Recargamos la tabla
+          tableProductos.ajax.reload()
+        } else {
+          // Mostramos error
+          swal("Error", objData.msg, "error");
         }
-      };
+      })
+
+      // //   Enviamos los datos por medio de elemento request
+      // const request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+      // request.open("POST", url, true);
+      // request.send(frmData);
+      // request.onreadystatechange = function () {
+      //   if (request.readyState == 4 && request.status == 200) {
+      //     const objData = JSON.parse(request.responseText);
+
+      //     if (objData.status) {
+      //       // Reseteamos los campos del formulario de productos
+      //       frmProducto.reset();
+
+      //       // Cerramos el modal
+      //       $("#modalProductos").modal("hide");
+
+      //       // Enviamos mensaje de exito
+      //       swal("Productos", objData.msg, "success");
+
+      //       // Recargamos la tabla
+      //       tableProductos.ajax.reload()
+      //     } else {
+      //       // Mostramos error
+      //       swal("Error", objData.msg, "error");
+      //     }
+      //   }
+      // };
     };
   }
 });
 
-
-// Para que se agreguen automaticamente los eventos
-window.addEventListener(
-  "load",
-  function () {
-    fntEditProducto();
-    fntDeleteProducto();
-  },
-  false
-);
-
-function fntEditProducto() {
+function fntEditProduct(idProducto) {
   // Todos los elementos que tengan la clase
-  var btnEditProducto = document.querySelectorAll(".btnEditProducto");
-  // Por cada elemento le agregamos un evento click para mostrar el modal
-  btnEditProducto.forEach(function (btnEditProducto) {
-    btnEditProducto.addEventListener("click", function () {
-      // Editar el estilo del modal
-      document.querySelector("#titleModal").innerHTML = "Actualizar Producto";
-      document
-        .querySelector(".modal-header")
-        .classList.replace("headerRegister", "headerUpdate");
-      document
-        .querySelector("#btnGuardar")
-        .classList.replace("btn-primary", "btn-info");
-      document.querySelector("#btnText").innerHTML = "Actualizar";
+  // var btnEditProduct = document.getElementById("btnEditProduct");
 
-      // Obtener los datos
-      var idProducto = this.getAttribute("idProducto");
-      var request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
-      var UrlUpdateProducto = `${base_url}Productos/getProducto/${idProducto}`;
-      request.open("GET", UrlUpdateProducto, true);
-      request.send();
+  // Evento click para mostrar el modal
+  // btnEditProduct.addEventListener("click", function () {
+  // Editar el estilo del modal
+  document.querySelector("#titleModal").innerHTML = "Actualizar Producto";
+  document.querySelector(".modal-header").classList.replace("headerRegister", "headerUpdate");
+  document.querySelector("#btnGuardar").classList.replace("btn-primary", "btn-info");
+  document.querySelector("#btnText").innerHTML = "Actualizar";
 
-      request.onreadystatechange = function () {
-        if (request.readyState == 4 && request.status == 200) {
-          var objData = JSON.parse(request.responseText);
+  // Obtener los datos
+  // const btnEditProduct = document.querySelector("idProducto");
+  // const idProducto = btnEditProduct.attributes.idProducto.value;
+  // console.log(idProducto)
+  const url = `${base_url}Productos/getProducto/${idProducto}`;
 
-          // Mostar los datos en los campos para editar
-          if (objData.status) {
-            document.querySelector("#idProducto").value = objData.data.id;
-            document.querySelector("#txtNombre").value = objData.data.name;
-            document.querySelector("#txtPrecio").value = objData.data.price;
-            document.querySelector("#txtStock").value = objData.data.stock;
-            document.querySelector("#txtDescripcion").value =
-              objData.data.description;
-            document.querySelector("#selecMedida").value = objData.data.measure;
-            document.querySelector("#selecEstado").value = objData.data.state;
+  const response = fnt_Fetch(url)
+  response.then(objData => {
+    if (objData.status) {
+      document.querySelector("#idProducto").value = objData.data.id;
+      document.querySelector("#txtNombre").value = objData.data.name;
+      document.querySelector("#txtPrecio").value = objData.data.price;
+      document.querySelector("#txtStock").value = objData.data.stock;
+      document.querySelector("#txtDescripcion").value = objData.data.description;
+      document.querySelector("#selecMedida").value = objData.data.measure;
+      document.querySelector("#lstProducts").style.display = 'none';
 
-            // validamos las unidades de medida
-            if (objData.data.measure == "KG") {
-              var select =
-                '<option value="KG" selected class="notBlock">KG</option>';
-            } else if (objData.data.measure == "UNIDAD") {
-              var select =
-                '<option value="UNIDAD" selected class="notBlock">UNIDAD</option>';
-            }
+      // validamos las unidades de medida
+      if (objData.data.measure == "KG") {
+        var select =
+          '<option value="KG" selected class="notBlock">KG</option>';
+      } else if (objData.data.measure == "UNIDAD") {
+        var select =
+          '<option value="UNIDAD" selected class="notBlock">UNIDAD</option>';
+      }
 
-            var htmlSelectMedida = `${select}
+      var htmlSelectMedida = `${select}
             <option value="KG">KG </option>
             <option value="UNIDAD">UNIDAD </option>
             `;
 
-            // Validamos el estado
-            if (objData.data.state == 1) {
-              var select =
-                '<option value="1" selected class="notBlock">Activo</option>';
-            } else if (objData.data.state == 0) {
-              var select =
-                '<option value="0" selected class="notBlock">Inactivo</option>';
-            }
-            var htmlSelectEstado = `${select}
-            <option value="1">Activo</option>
-            <option value="0">Inactivo</option>
-            `;
+      // Validamos el estado - EN LA EDICIÓN NO SE CAMBIA EL ESTADO
+      // if (objData.data.state == 1) {
+      //   var select =
+      //     '<option value="1" selected class="notBlock">Activo</option>';
+      // } else if (objData.data.state == 0) {
+      //   var select =
+      //     '<option value="0" selected class="notBlock">Inactivo</option>';
+      // }
+      // var htmlSelectEstado = `${select}
+      // <option value="1">Activo</option>
+      // <option value="0">Inactivo</option>
+      // `;
 
-            // Mostramos los datos en los select
-            document.querySelector("#selecMedida").innerHTML = htmlSelectMedida;
-            document.querySelector("#selecEstado").innerHTML = htmlSelectEstado;
-            $("#modalProductos").modal("show");
-          } else {
-            // Mostramos error
-            swal("Error", objData.msg, "error");
-          }
-        }
-      };
+      // Mostramos los datos en los select
+      document.querySelector("#selecMedida").innerHTML = htmlSelectMedida;
 
-      // Mostramos el modal
-      // $("#modalProductos").modal("show");
-    });
-  });
+      // document.querySelector("#selecEstado").innerHTML = htmlSelectEstado;
+      $("#modalProductos").modal("show");
+    } else {
+      // Mostramos error
+      swal("Error", objData.msg, "error");
+    }
+  })
+
+  // const request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+  // request.open("GET", url, true);
+  // request.send();
+
+  // request.onreadystatechange = function () {
+  //   if (request.readyState == 4 && request.status == 200) {
+  //     var objData = JSON.parse(request.responseText);
+
+  //     // Mostar los datos en los campos para editar
+  //     if (objData.status) {
+  //       document.querySelector("#idProducto").value = objData.data.id;
+  //       document.querySelector("#txtNombre").value = objData.data.name;
+  //       document.querySelector("#txtPrecio").value = objData.data.price;
+  //       document.querySelector("#txtStock").value = objData.data.stock;
+  //       document.querySelector("#txtDescripcion").value = objData.data.description;
+  //       document.querySelector("#selecMedida").value = objData.data.measure;
+  //       document.querySelector("#lstProducts").style.display = 'none';
+
+  //       // validamos las unidades de medida
+  //       if (objData.data.measure == "KG") {
+  //         var select =
+  //           '<option value="KG" selected class="notBlock">KG</option>';
+  //       } else if (objData.data.measure == "UNIDAD") {
+  //         var select =
+  //           '<option value="UNIDAD" selected class="notBlock">UNIDAD</option>';
+  //       }
+
+  //       var htmlSelectMedida = `${select}
+  //           <option value="KG">KG </option>
+  //           <option value="UNIDAD">UNIDAD </option>
+  //           `;
+
+  //       // Validamos el estado - EN LA EDICIÓN NO SE CAMBIA EL ESTADO
+  //       // if (objData.data.state == 1) {
+  //       //   var select =
+  //       //     '<option value="1" selected class="notBlock">Activo</option>';
+  //       // } else if (objData.data.state == 0) {
+  //       //   var select =
+  //       //     '<option value="0" selected class="notBlock">Inactivo</option>';
+  //       // }
+  //       // var htmlSelectEstado = `${select}
+  //       // <option value="1">Activo</option>
+  //       // <option value="0">Inactivo</option>
+  //       // `;
+
+  //       // Mostramos los datos en los select
+  //       document.querySelector("#selecMedida").innerHTML = htmlSelectMedida;
+
+  //       // document.querySelector("#selecEstado").innerHTML = htmlSelectEstado;
+  //       $("#modalProductos").modal("show");
+  //     } else {
+  //       // Mostramos error
+  //       swal("Error", objData.msg, "error");
+  //     }
+  //   }
+  // };
+  // });
 }
 
-function fntDeleteProducto() {
+function fntDeleteProduct(idProducto) {
   // Todos los elementos que tengan la clase
-  var btnDeleteProducto = document.querySelectorAll(".btnDeleteProducto");
-  // Por cada elemento le agregamos un evento click para mostrar el modal
-  btnDeleteProducto.forEach(function (btnDeleteProducto) {
-    btnDeleteProducto.addEventListener("click", function () {
-      // Obtener los datos
-      var idProducto = this.getAttribute("idProducto");
+  // const btnDeleteProducto = document.querySelector("#btnDeleteProduct");
 
-      swal({
-          title: "Eliminar Producto",
-          text: "Realmente quiere eliminar el producto?",
-          type: "warning",
-          showCancelButton: true,
-          confirmButtonText: "Sí, eliminar!",
-          cancelButtonText: "No, cancelar!",
-          closeOnConfirm: false,
-          closeOnCancel: true,
-        },
-        (isConfirm) => {
-          if (isConfirm) {
-            var request = window.XMLHttpRequest ?
-              new XMLHttpRequest() :
-              new ActiveXObject("Microsoft.XMLHTTP");
+  // Evento click para mostrar el modal
+  // btnDeleteProducto.addEventListener("click", function () {
+  // Obtener los datos
+  // const idProducto = this.getAttribute("idProducto");
 
-            var UrlDeleteProducto = base_url + "Productos/deleteProduct/";
-            var data = "idProducto=" + idProducto;
-            request.open("POST", UrlDeleteProducto, true);
-            request.setRequestHeader(
-              "Content-type",
-              "application/x-www-form-urlencoded"
-            );
-            request.send(data);
+  swal({
+      title: "Eliminar Producto",
+      text: "Realmente quiere eliminar el producto?",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar!",
+      cancelButtonText: "No, cancelar!",
+      closeOnConfirm: false,
+      closeOnCancel: true,
+    },
+    (isConfirm) => {
+      if (isConfirm) {
+        const url = `${base_url}Productos/deleteProduct/`;
+        const data = "idProducto=" + idProducto;
 
-            request.onreadystatechange = function () {
-              if (request.readyState == 4 && request.status == 200) {
-                var objData = JSON.parse(request.responseText);
-                if (objData.status) {
-                  swal("Eliminar!", objData.msg, "success");
-                  tableProductos.ajax.reload(function () {
-                    fntEditProducto();
-                    fntDeleteProducto();
-                  });
-                } else {
-                  swal("Atencion!", objData.msg, "error");
-                }
-              }
-            };
+        const request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+        request.open("POST", url, true);
+        request.setRequestHeader(
+          "Content-type",
+          "application/x-www-form-urlencoded"
+        );
+        request.send(data);
+        request.onreadystatechange = function () {
+          if (request.readyState == 4 && request.status == 200) {
+            var objData = JSON.parse(request.responseText);
+
+            if (objData.status) {
+              swal("Eliminar!", objData.msg, "success");
+              tableProductos.ajax.reload()
+            } else {
+              swal("Atencion!", objData.msg, "error");
+            }
           }
-        }
-      );
-    });
-  });
+        };
+      }
+    }
+  );
+  // });
+}
+
+function fntEnableProduct(idProducto) {
+  // Todos los elementos que tengan la clase
+  // const btnEnableProducto = document.querySelector("#btnEnableProduct");
+
+  // Evento click para mostrar el modal
+  // btnEnableProducto.addEventListener('click', function () {
+  // Obtener los datos
+  // const idProducto = this.getAttribute("idProducto");
+
+  swal({
+      title: "Habilitar Producto",
+      text: "Realmente quiere Habilitar el Producto?",
+      type: "info",
+      showCancelButton: true,
+      confirmButtonText: "Sí, Habilitar!",
+      cancelButtonText: "No, cancelar!",
+      closeOnConfirm: false,
+      closeOnCancel: true,
+    },
+    (isConfirm) => {
+      if (isConfirm) {
+        const url = `${base_url}Productos/enableProduct/`;
+        const frm = new FormData()
+        frm.append('idProducto', idProducto)
+
+        const request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+        request.open("POST", url);
+        request.send(frm);
+        request.onreadystatechange = function () {
+          if (request.readyState == 4 && request.status == 200) {
+            const objData = JSON.parse(request.responseText);
+
+            if (objData.status) {
+              swal("Habilitar!", objData.msg, "success");
+              tableProductos.ajax.reload()
+            } else {
+              swal("Atencion!", objData.msg, "error");
+            }
+          }
+        };
+      }
+    })
+  // })
 }
 
 // Funcion para mostrar el modal
 function OpenModal() {
   document.querySelector("#idProducto").value = "";
   document.querySelector("#titleModal").innerHTML = "Nuevo Producto";
-  document
-    .querySelector(".modal-header")
-    .classList.replace("headerUpdate", "headerRegister");
-  document
-    .querySelector("#btnGuardar")
-    .classList.replace("btn-info", "btn-primary");
+  document.querySelector(".modal-header").classList.replace("headerUpdate", "headerRegister");
+  document.querySelector("#btnGuardar").classList.replace("btn-info", "btn-primary");
   document.querySelector("#btnText").innerHTML = "Guardar";
+  document.querySelector("#lstProducts").style.display = 'block';
   document.querySelector("#frmProducto").reset();
   $("#modalProductos").modal("show");
+}
+
+function fnt_Fetch(url, method = '', Databody = '') {
+  var jsonResponse;
+
+  if (method == 'post') {
+    jsonResponse = fetch(url, {
+      method: method,
+      body: Databody
+    }).then(res => res.json())
+  } else {
+    jsonResponse = fetch(url).then(res => res.json())
+  }
+
+  return jsonResponse;
 }
