@@ -64,10 +64,10 @@ class  Clientes extends Controllers
 
                     // ACCIONES
                     $arrdatos[$i]['options'] = '<div class="p-0 m-0">
-                                             <button idCliente="' . $arrdatos[$i]['Id'] . '" class="btnEditCliente btn btn-sm btn-primary">
+                                             <button onclick="fntEditClient(' . $arrdatos[$i]['Id'] . ')" class="btn btn-sm btn-primary">
                                                   <i class="fas fa-pencil-alt"></i>
                                              </button>
-                                             <button idCliente="' . $arrdatos[$i]['Id'] . '" class="btnDeleteCliente btn btn-sm btn-danger">
+                                             <button onclick="fntDeleteClient(' . $arrdatos[$i]['Id'] . ')" class="btn btn-sm btn-danger">
                                                   <i class="fas fa-trash"></i>
                                              </button>
                                         </div>';
@@ -77,7 +77,7 @@ class  Clientes extends Controllers
 
                     // ACCIONES
                     $arrdatos[$i]['options'] = '<div class="p-0 m-0">
-                                             <button idCliente="' . $arrdatos[$i]['Id'] . '" class="btnEnableCliente btn btn-sm btn-warning">
+                                             <button onclick="fntEnableClient(' . $arrdatos[$i]['Id'] . ')" class="btn btn-sm btn-warning">
                                                   <i class="fas fa-sync-alt"></i>
                                              </button>
                                              <button idCliente="' . $arrdatos[$i]['Id'] . '"disabled=true class="btnDeleteCliente btn btn-sm btn-danger">
@@ -126,7 +126,8 @@ class  Clientes extends Controllers
                $actividadCliente = strClean($_POST['txtActividad']);
                $regimenCliente = strClean($_POST['selecRegimen']);
                $Status = intval($_POST['selecEstado']);
-               // PrintData('CONTROLADOR. CEDULA.. ' . $idCliente);
+               // PrintData('CONTROLADOR. ID CLIENTE.. ' . $idCliente);
+               // PrintData('CONTROLADOR. CEDULA.. ' . $identificacionCliente);
                // PrintData('CONTROLADOR. DISTRITO.. ' . $idDistrito);
 
                if ($idCliente == 0) {
