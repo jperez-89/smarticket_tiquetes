@@ -6,7 +6,8 @@ window.addEventListener(
   "load",
   function () {
     getCantProducts();
-    getCantClients()
+    getCantClients();
+    getCantUsers();
   },
   false
 );
@@ -37,6 +38,21 @@ function getCantClients() {
     if (request.readyState == 4 && request.status == 200) {
       var objData = JSON.parse(request.responseText);
       document.querySelector("#cantClientes").innerHTML = objData[0].Cantidad;
+    }
+  };
+}
+
+function getCantUsers() {
+  // Obtener los datos
+  var request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+  var url = base_url + "Usuarios/getCantUsers";
+  request.open("GET", url);
+  request.send();
+
+  request.onreadystatechange = function () {
+    if (request.readyState == 4 && request.status == 200) {
+      var objData = JSON.parse(request.responseText);
+      document.querySelector("#cantUsers").innerHTML = objData[0].Cantidad;
     }
   };
 }

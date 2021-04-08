@@ -26,9 +26,12 @@
                                              <th>Identificación</th>
                                              <th>Nombre</th>
                                              <th>Apellidos</th>
-                                             <th>Email</th>
                                              <th>Teléfono</th>
+                                             <th>Email</th>
                                              <th>Usuario</th>
+                                             <th>Contraseña</th>
+                                             <th>Rol</th>
+                                             <th>Estado</th>
                                              <th>Acciones</th>
                                         </tr>
                                    </thead>

@@ -40,10 +40,10 @@
           </div>
           <div class="col-md-6 col-lg-3">
                <div class="widget-small primary coloured-icon">
-                    <a href="<?= base_url(); ?>users"><i class="icon fa fa-users fa-3x"></i></a>
+                    <a href="<?= base_url(); ?>usuarios"><i class="icon fa fa-users fa-3x"></i></a>
                     <div class="info">
                          <h4>Usuarios</h4>
-                         <p><b>10</b></p>
+                         <p> <b id="cantUsers"></b> </p>
                     </div>
                </div>
           </div>
