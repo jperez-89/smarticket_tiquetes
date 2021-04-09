@@ -23,12 +23,14 @@
                                                   <label for="txtDescripcionRol" class="control-label">Descripción</label>
                                                   <input class="form-control" id="txtDescripcionRol" name="txtDescripcionRol" type="text" placeholder="Descripción">
                                              </div>
-                                             <div class="form-group">
-                                                  <label for="selecEstadoRol" class="control-label">Estado</label>
-                                                  <select class="form-control" name="selecEstadoRol" id="selecEstadoRol">
-                                                       <option value="1">Activo</option>
-                                                       <option value="0">Inactivo</option>
-                                                  </select>
+                                             <div class="form-group" id="lstRol">
+                                                  <div class="form-group">
+                                                       <label for="selecEstadoRol" class="control-label">Estado</label>
+                                                       <select class="form-control" name="selecEstadoRol" id="selecEstadoRol">
+                                                            <option value="1">Activo</option>
+                                                            <option value="0">Inactivo</option>
+                                                       </select>
+                                                  </div>
                                              </div>
                                         </div>
                                    </div>

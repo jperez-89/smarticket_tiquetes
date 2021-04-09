@@ -4,7 +4,12 @@
      <div class="app-sidebar__user">
           <img class="app-sidebar__user-avatar" src="<?= media(); ?>images/avatar.png" alt="User Image">
           <div>
-               <p class="app-sidebar__user-name">Jairo Pérez</p>
+               <p class="app-sidebar__user-name">
+                    Jairo Pérez
+                    
+                    <!-- session_start();
+                    $_SESSION['username'] -->
+               </p>
                <p id="RolUsuario" class="app-sidebar__user-designation">Administrador</p>
           </div>
      </div>

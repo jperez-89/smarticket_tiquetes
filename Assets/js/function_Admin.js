@@ -56,3 +56,18 @@ function getCantUsers() {
     }
   };
 }
+
+// function getUser() {
+//   // Obtener los datos
+//   var request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+//   var url = base_url + "Usuarios/getUser";
+//   request.open("GET", url);
+//   request.send();
+
+//   request.onreadystatechange = function () {
+//     if (request.readyState == 4 && request.status == 200) {
+//       var objData = JSON.parse(request.responseText);
+//       document.querySelector("#cantUsers").innerHTML = objData[0].Cantidad;
+//     }
+//   };
+// }

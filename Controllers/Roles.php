@@ -21,26 +21,55 @@ class  Roles extends Controllers
      public function getRoles()
      {
           $arrdatos = $this->model->selectRoles();
+
           for ($i = 0; $i < count($arrdatos); $i++) {
                if ($arrdatos[$i]['status'] == 1) {
+                    // ESTADO
                     $arrdatos[$i]['status'] = '<span class="badge badge-success">Activo</span>';
-               } else {
-                    $arrdatos[$i]['status'] = '<span class="badge badge-danger">Inactivo</span>';
-               }
-               $arrdatos[$i]['options'] = '<div class="p-0 m-0">
-                                             <button idRol="' . $arrdatos[$i]['Id'] . '" class="btnEditRol btn btn-sm btn-primary">
+
+                    // ACCIONES
+                    $arrdatos[$i]['options'] = '<div class="p-0 m-0">
+                                             <button onclick="fntEditRol(' . $arrdatos[$i]['Id'] . ')" class="btn btn-sm btn-primary">
                                                   <i class="fas fa-pencil-alt"></i>
                                              </button>
-                                             <button idRol="' . $arrdatos[$i]['Id'] . '" class="btnDeleteRol btn btn-sm btn-danger">
+                                             <button onclick="fntDeleteRol(' . $arrdatos[$i]['Id'] . ')" class="btn btn-sm btn-danger">
                                                   <i class="fas fa-trash"></i>
                                              </button>
                                         </div>';
+               } else {
+                    // ESTADO
+                    $arrdatos[$i]['status'] = '<span class="badge badge-danger">Inactivo</span>';
+
+                    // ACCIONES
+                    $arrdatos[$i]['options'] = '<div class="p-0 m-0">
+                                             <button onclick="fntEnableRol(' . $arrdatos[$i]['Id'] . ')" class="btn btn-sm btn-warning">
+                                                  <i class="fas fa-sync-alt"></i>
+                                             </button>
+                                             <button idUser="' . $arrdatos[$i]['Id'] . '"disabled=true class="btnDeleteUser btn btn-sm btn-danger">
+                                                  <i class="fas fa-trash"></i>
+                                             </button>
+                                        </div>';
+               }
           }
           echo json_encode($arrdatos, JSON_UNESCAPED_UNICODE);
           die();
      }
 
-     // INSERTA Y ACTUALIZA
+     public function getRol(int $idRol)
+     {
+          $idRol = intval(strClean($idRol));
+          if ($idRol > 0) {
+               $arrdatos = $this->model->selectRol($idRol);
+               if (empty($arrdatos)) {
+                    $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
+               } else {
+                    $arrResponse = array('status' => true, 'data' => $arrdatos);
+               }
+               echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+          }
+          die();
+     }
+
      public function setRol()
      {
           $idRol = intval($_POST['idRol']);
@@ -48,7 +77,7 @@ class  Roles extends Controllers
           $DescripcionRol = strClean($_POST['txtDescripcionRol']);
           $status = intval($_POST['selecEstadoRol']);;
 
-          if ($idRol == "") {
+          if ($idRol == 0) {
                $request_Producto = $this->model->insertRol($nombreRol, $DescripcionRol, $status);
                $option = 1;
           } else {
@@ -71,18 +100,37 @@ class  Roles extends Controllers
           die();
      }
 
-     public function getRol(int $idRol)
+     public function deleteRol()
      {
-          $idRol = intval(strClean($idRol));
-          if ($idRol > 0) {
-               $arrdatos = $this->model->selectRol($idRol);
-               if (empty($arrdatos)) {
-                    $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
-               } else {
-                    $arrResponse = array('status' => true, 'data' => $arrdatos);
-               }
-               echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+          $id = intval($_POST['id']);
+          $resquestDelete = $this->model->deleteRol($id);
+
+          if ($resquestDelete == 'ok') {
+               $arrResponse = array('status' => true, 'msg' => 'Rol deshabilitado.');
+          } elseif ($resquestDelete == 'exist') {
+               $arrResponse = array('status' => false, 'msg' => 'No es posible deshabilitar el Rol.');
+          } else {
+               $arrResponse = array('status' => false, 'msg' => 'No es posible eliminar los datos.');
           }
+          echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
           die();
      }
+
+     public function enableRol()
+     {
+          $id = intval($_POST['id']);
+          $request = $this->model->enableRol($id);
+
+          if ($request == 'ok') {
+               $arrResponse = array('status' => true, 'msg' => 'Rol habilitado.');
+          } elseif ($request == 'exist') {
+               $arrResponse = array('status' => false, 'msg' => 'No es posible habilitar el Rol.');
+          } else {
+               $arrResponse = array('status' => false, 'msg' => 'No es posible eliminar los datos.');
+          }
+          echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+          die();
+     }
+
+
 }

@@ -68,4 +68,46 @@ class RolesModel extends Crud
           }
           return $resquest;
      }
+
+     public function deleteRol(int $id)
+     {
+          $this->id = $id;
+          $sql = "SELECT * FROM roles WHERE Id = $this->id";
+          $resquest = $this->get_OneRegister($sql);
+
+          if (!empty($resquest)) {
+               $sql = "UPDATE roles SET status = ? WHERE id = $this->id";
+               $arrData = array(0);
+               $resquest = $this->update_Register($sql, $arrData);
+               if ($resquest) {
+                    $resquest = "ok";
+               } else {
+                    $resquest = "error";
+               }
+          } else {
+               $resquest = "exist";
+          }
+          return $resquest;
+     }
+
+     public function enableRol(int $id)
+     {
+          $this->id = $id;
+          $sql = "SELECT * FROM roles WHERE Id = $this->id";
+          $resquest = $this->get_OneRegister($sql);
+
+          if (!empty($resquest)) {
+               $sql = "UPDATE roles SET status = ? WHERE id = $this->id";
+               $arrData = array(1);
+               $resquest = $this->update_Register($sql, $arrData);
+               if ($resquest) {
+                    $resquest = "ok";
+               } else {
+                    $resquest = "error";
+               }
+          } else {
+               $resquest = "exist";
+          }
+          return $resquest;
+     }
 }
