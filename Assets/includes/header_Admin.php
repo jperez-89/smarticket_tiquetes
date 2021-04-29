@@ -11,19 +11,25 @@
      <meta name="theme-color" content="#009688">
      <link rel="shortcut icon" href="<?= media(); ?>images/favicon2.ico" type="image/x-icon">
      <title><?php echo $data["page_title"] ?></title>
+
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+     <!-- Select 2 -->
+     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
      <!-- DataTables CSS -->
      <link rel="stylesheet" type="text/css" href="<?php echo media(); ?>DataTables/datatables.min.css">
      <link rel="stylesheet" type="text/css" href="<?php echo media(); ?>DataTables/DataTables-1.10.23/css/datatables.bootstrap4.min.css">
 
      <!-- Main CSS-->
-     <link rel="stylesheet" type="text/css" href="<?php echo media(); ?>css/main.css">
      <link rel="stylesheet" type="text/css" href="<?php echo media(); ?>css/style.css">
+     <link rel="stylesheet" type="text/css" href="<?php echo media(); ?>css/main.css">
 </head>
 
 <body class="app sidebar-mini">
      <!-- Navbar-->
      <header class="app-header">
-          <a class="app-header__logo" href="<?php base_url()?>dashboard">Supermarket</a>
+          <a class="app-header__logo" href="<?php echo base_url() ?>">Supermarket</a>
           <!-- Sidebar toggle button-->
           <a class="app-sidebar__toggle" href="#" data-toggle="sidebar" aria-label="Hide Sidebar"></a>
           <!-- Navbar Right Menu-->
@@ -40,4 +46,5 @@
           </ul>
      </header>
 
-     <?= navBarAdmin(); ?>
+     <div class="container-fluid">
+          <?= navBarAdmin(); ?>

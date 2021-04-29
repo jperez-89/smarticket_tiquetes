@@ -6,7 +6,7 @@
           <div>
                <p class="app-sidebar__user-name">
                     Jairo Pérez
-                    
+
                     <!-- session_start();
                     $_SESSION['username'] -->
                </p>
@@ -21,7 +21,6 @@
                     <span class="app-menu__label">Dashboard</span>
                </a>
           </li>
-
           <!-- CLIENTES --------------------------------------- -->
           <li>
                <a class="app-menu__item" href="<?= base_url() ?>clientes">
@@ -29,17 +28,6 @@
                     <span class="app-menu__label">Clientes</span>
                </a>
           </li>
-
-          <!-- <li class="treeview">
-               <a class="app-menu__item" href="#" data-toggle="treeview">
-                    <i class="app-menu__icon fa fa-user"></i>
-                    <span class="app-menu__label">Clientes</span>
-                    <i class="treeview-indicator fa fa-angle-right"></i>
-               </a>
-               <ul class="treeview-menu">
-                    <li><a class="treeview-item" href="<?= base_url() ?>#"><i class="icon fa fa-circle-o"></i>Lista de Clientes</a></li>
-               </ul>
-          </li> -->
 
           <!-- PRODUCTOS --------------------------------------- -->
           <li>
@@ -58,13 +46,14 @@
                </a>
                <ul class="treeview-menu">
                     <li>
-                         <a class="treeview-item" href="<?= base_url() ?>facturas"><i class="icon fa fa-circle-o"></i>Facturas</a>
-                    </li>
-                    <li>
-                         <a class="treeview-item" href="<?= base_url() ?>roles" target="" rel="noopener">
-                              <i class="icon fa fa-circle-o"></i>Roles
+                         <a class="treeview-item" href="<?= base_url() ?>facturacion/nueva_factura" rel="noopener">
+                              <i class="icon fa fa-circle-o"></i>Nueva Venta
                          </a>
                     </li>
+                    <li>
+                         <a class="treeview-item" href="<?= base_url() ?>facturacion/facturas"><i class="icon fa fa-circle-o"></i>Facturas</a>
+                    </li>
+
                </ul>
           </li>
 
@@ -86,8 +75,5 @@
                     </li>
                </ul>
           </li>
-
-
-          <!-- <li><a class="app-menu__item" href="docs.html"><i class="app-menu__icon fa fa-cart-plus"></i><span class="app-menu__label">Pedidos</span></a></li> -->
      </ul>
 </aside>

@@ -1,10 +1,11 @@
 <?php
 // Cambia la primera letra del controlador a mayuscula
 $controller = ucwords($controller);
+// echo 'CONTROLER - '.$controller;
 
 // Obtener URL de los archivos controladores
 $UrlcontrollerFile = "Controllers/" . $controller . ".php";
-
+// echo ' - URL CONTROLER - '.$UrlcontrollerFile;
 // Valida que exista la URL
 if (file_exists($UrlcontrollerFile)) {
      // Carga el archivo
