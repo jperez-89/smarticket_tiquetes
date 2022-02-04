@@ -5,7 +5,7 @@
 </script>
 
 <!-- Essential javascripts for application to work-->
-<script type="text/javascript" src="<?php echo media(); ?>js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="<?php echo media(); ?>js/jquery-3.4.1.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
 
@@ -27,8 +27,8 @@
 <script type="text/javascript" src="<?php echo media(); ?>DataTables/datatables.min.js"></script>
 
 <!-- JS Para usar botones en datatables -->
-<script type="text/javascript" src="<?php echo media(); ?>DataTables/Buttons-1.6.5/js/dataTables.buttons.min.js"></script>
-<script type="text/javascript" src="<?php echo media(); ?>DataTables/Buttons-1.6.5/js/buttons.html5.min.js"></script>
+<script type="text/javascript" src="<?php echo media(); ?>DataTables/Buttons/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="<?php echo media(); ?>DataTables/Buttons/js/buttons.html5.min.js"></script>
 <script type="text/javascript" src="<?php echo media(); ?>DataTables/JSZip-2.5.0/jszip.min.js"></script>
 <script type="text/javascript" src="<?php echo media(); ?>DataTables/pdfmake-0.1.36/pdfmake.min.js"></script>
 <script type="text/javascript" src="<?php echo media(); ?>DataTables/pdfmake-0.1.36/vfs_fonts.js"></script>

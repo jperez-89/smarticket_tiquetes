@@ -3,37 +3,49 @@ var tabla = $("#tblFactura").dataTable({
      paging: false,
      searching: false,
      language: {
-          sInfo: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-     },
+          "sLengthMenu": "Mostrar _MENU_ registros",
+          "sSearch": "Buscar:",
+          "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+          "sEmpyTable": "No hay datos en esta tabla",
+          "oPaginate": {
+               "sFirst": "Primero",
+               "sLast": "Ultimo",
+               "sNext": "Siguiente",
+               "sPrevious": "Anterior",
+          }
+     }
 });
 
 // CARGA LA FUNCION AL INICIAR LA PAGINA
 window.onload = function () {
      this.FechaActual();
 };
+const identification = document.querySelector("#Identificacion");
 
 const btnIdentificacion = document.querySelector("#btnIdentificacion");
-btnIdentificacion.onclick = function (e) {
+btnIdentificacion.onclick = async function (e) {
      e.preventDefault();
-     const identification = document.querySelector("#Identificacion").value;
-     if (identification != " ") {
-          const url = `${base_url}Facturacion/getCliente/${identification}`;
+     let id = identification.value;
+     if (id != "") {
+          const url = `${base_url}Facturacion/getCliente/${id}`;
 
-          const response = fnt_Fetch(url);
-          response.then((InfoCliente) => {
-               if (InfoCliente.status) {
-                    document.querySelector("#Nombre").value = InfoCliente.data.Nombre;
-                    document.querySelector("#Telefono").value = InfoCliente.data.Telefono;
-                    document.querySelector("#Email").value = InfoCliente.data.Email;
-                    document.querySelector("#Direccion").value = InfoCliente.data.Direccion;
-               } else {
-                    document.querySelector("#Nombre").value = " ";
-                    document.querySelector("#Telefono").value = " ";
-                    document.querySelector("#Email").value = " ";
-                    document.querySelector("#Direccion").value = " ";
-               }
-          });
+          const InfoCliente = await fnt_Fetch(url);
+          // response.then((InfoCliente) => {
+          if (InfoCliente.status) {
+               document.querySelector("#Nombre").value = InfoCliente.data.Nombre;
+               document.querySelector("#Telefono").value = InfoCliente.data.Telefono;
+               document.querySelector("#Email").value = InfoCliente.data.Email;
+               document.querySelector("#Direccion").value = InfoCliente.data.Direccion;
+          } else {
+               swal(InfoCliente.msg, ' ', 'error')
+               document.querySelector("#Nombre").value = " ";
+               document.querySelector("#Telefono").value = " ";
+               document.querySelector("#Email").value = " ";
+               document.querySelector("#Direccion").value = " ";
+          }
+          // });
      } else {
+          swal('Agrega la identificación del cliente', ' ', 'info')
           document.querySelector("#Nombre").value = " ";
           document.querySelector("#Telefono").value = " ";
           document.querySelector("#Email").value = " ";
@@ -42,9 +54,9 @@ btnIdentificacion.onclick = function (e) {
 };
 
 const nombreProducto = document.querySelector("#nombreProducto");
-nombreProducto.onclick = function (e) {
-     document.getElementById("alerta").innerHTML = "(Precione enter para buscar)";
-};
+// nombreProducto.onclick = function (e) {
+//      document.getElementById("alerta").innerHTML = "(Precione enter para buscar)";
+// };
 
 nombreProducto.onkeypress = function (e) {
      if (e.keyCode == 13) {
@@ -56,6 +68,7 @@ nombreProducto.onkeypress = function (e) {
                response.then((InfoProducto) => {
                     if (InfoProducto.status) {
                          if (InfoProducto.data.state != 0) {
+                              idProducto = InfoProducto.data.id;
                               $("#btnAgregarProducto").removeClass("disabled");
                               document.querySelector("#nombreProducto").value = InfoProducto.data.name;
                               document.querySelector("#Precio").value = InfoProducto.data.price;
@@ -75,20 +88,20 @@ nombreProducto.onkeypress = function (e) {
           }
      } else {
           document.getElementById("alerta").classList.remove("error");
-          document.getElementById("alerta").innerHTML = "(Precione enter para buscar)";
+          // document.getElementById("alerta").innerHTML = "(Precione enter para buscar)";
      }
 };
 
-function fnt_Fetch(url, method = "", Databody) {
+async function fnt_Fetch(url, method = "", Databody) {
      var jsonResponse;
 
      if (method == "post") {
-          jsonResponse = fetch(url, {
+          jsonResponse = await fetch(url, {
                method: method,
                body: Databody,
           }).then((res) => res.json());
      } else {
-          jsonResponse = fetch(url).then((res) => res.json());
+          jsonResponse = await fetch(url).then((res) => res.json());
      }
      return jsonResponse;
 };
@@ -101,7 +114,11 @@ function FechaActual() {
      var anho = fecha.getFullYear(); //obteniendo año
      if (dia < 10) dia = "0" + dia; //agrega cero si el menor de 10
      if (mes < 10) mes = "0" + mes; //agrega cero si el menor de 10
-     document.getElementById("txtFecha").value = anho + "-" + mes + "-" + dia;
+     var fchActual = document.querySelectorAll('#txtFecha');
+     fchActual.forEach(function (fchActual) {
+          fchActual.value = anho + "-" + mes + "-" + dia;
+     })
+
 };
 
 // AGREGA LA LINEA DEL PRODUCTO A LA TABLA
@@ -114,25 +131,14 @@ var NuevaCantidad = 0,
      iva = 0,
      subTotal = 0,
      total = 0,
-     DatosTabla;
+     DatosTabla, idProducto;
 
 const btnAgregarProducto = document.querySelector("#btnAgregarProducto");
 btnAgregarProducto.onclick = function () {
-     // }
-     // $(document).on("click", "#btnAgregarProducto", function (e) {
      cantidad = document.querySelector("#Cantidad").value;
      precio = document.querySelector("#Precio").value;
 
      if (cantidad != "" && nombreProducto.value != "") {
-          // tabla = $("#tblFactura").dataTable({
-          //      retrieve: true,
-          //      paging: false,
-          //      searching: false,
-          //      language: {
-          //           sInfo: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-          //      },
-          // });
-
           // ------------ PROCESO EN CASO DE QUE SEA EL PRIMER PRODUCTO ------------------------------
           if (cfilas == 0) {
                subTotal = precio * cantidad;
@@ -146,9 +152,9 @@ btnAgregarProducto.onclick = function () {
                     Number.parseFloat(subTotal).toFixed(2),
                     Number.parseFloat(iva),
                     Number.parseFloat(total),
-                    '<div class="">' +
-                    '<button class="btn btn-info" id="EditarLinea" title="Editar Linea"><i class="fa fa-edit"></i></button>' +
-                    '<button class="btn btn-danger" id="EliminarLinea" title="Eliminar Linea"><i class="fa fa-trash"></i></button>' +
+                    '<div class="text-center">' +
+                    '<button class="btn btn-info" onclick="btnEditarLinea(' + idProducto + ')" id="btnEditarLinea" title="Editar Linea"><i class="fa fa-edit"></i></button>' +
+                    '<button class="btn btn-danger" onclick = "btnEliminarLinea(' + idProducto + ')" id="btnEliminarLinea" title="Eliminar Linea"><i class="fa fa-trash"></i></button>' +
                     "</div>",
                ]);
                cfilas += 1;
@@ -186,8 +192,6 @@ btnAgregarProducto.onclick = function () {
                }
                // ------------ SI NO EXISTE EL CODIGO DEL PRODUCTO, AGREGA LA INFORMACION A LA TABLA ----------------------
                else {
-                    // cantidad = Number(cantidad);
-                    // precio = $("#Precio").val();
                     subTotal = precio * cantidad;
                     iva = precio * 0.13;
                     total = iva + subTotal;
@@ -199,9 +203,9 @@ btnAgregarProducto.onclick = function () {
                          Number.parseFloat(subTotal).toFixed(2),
                          Number.parseFloat(iva),
                          Number.parseFloat(total),
-                         '<div class="">' +
-                         '<button class="btn btn-info" id="EditarLinea" title="Editar Linea"><i class="fa fa-edit"></i></button>' +
-                         '<button class="btn btn-danger" id="EliminarLinea" title="Eliminar Linea"><i class="fa fa-trash"></i></button>' +
+                         '<div class="text-center">' +
+                         '<button class="btn btn-info" onclick="btnEditarLinea()" id="btnEditarLinea" title="Editar Linea"><i class="fa fa-edit"></i></button>' +
+                         '<button class="btn btn-danger" onclick = "btnEliminarLinea()" id="btnEliminarLinea" title="Eliminar Linea"><i class="fa fa-trash"></i></button>' +
                          "</div>",
                     ]);
                     cfilas += 1;
@@ -248,13 +252,60 @@ function CalcularTotales(tabla, cfilas) {
 
      document.querySelector("#Subtotal").value = Number.parseFloat(SubTotal).toFixed(2);
      document.querySelector("#iva").value = Number.parseFloat(SubTotalIVA).toFixed(2);
-     document.querySelector("#Total").value = Number.parseFloat(TotalFactura).toFixed(2);
+     var totalfactura = document.querySelectorAll("#totalFactura");
+
+     totalfactura.forEach(function (totalfactura) {
+          totalfactura.value = Number.parseFloat(TotalFactura).toFixed(2);
+     })
+
 
      // $('#Subtotal').val(numeral(SubTotal).format('0,0.00'));
      // $('#TxtMontoDescuento').val(numeral(SubTotalDescuento).format('0,0.00'));
      // $('#TxtImpuesto').val(numeral(SubTotalIVA).format('0,0.00'));
      // $('#TxtTotalFactura').val(numeral(TotalFactura).format('0,0.00'));
 }
+
+function btnEliminarLinea() {
+     Swal.fire({
+          title: 'Seguro de que quiere eliminar ésta linea?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Si',
+          cancelButtonText: 'No'
+     }).then((result) => {
+          if (result.value) {
+               // const index = tabla.parent();
+               // console.log(index);
+
+               tabla.row($(this).parents('tr'))
+                    .remove()
+                    .draw();
+
+
+               // var row = $(this).closest("tr").get(0);
+               // console.log(row)
+               // tabla.fnDeleteRow(tabla.fnGetPosition(row));
+
+               // tabla[0].rows(':eq(0)').remove().draw();
+
+               // console.log($(this).parents('tr').eq(0))
+               // tabla.fnDeleteRow(index);
+
+               // alert('You clicked on ' + index + '\'s row');
+
+               // var row = tabla.closest("tr").get(0);
+               cfilas -= 1;
+               // if (cfilas == 0) {
+               //      tabla = null;
+               // }
+
+               CalcularTotales(tabla, cfilas);
+          }
+     })
+}
+
 
 // ========================== FUNCIONES QUE NO SE UTILIZAN =======================================
 // function SearchClient(identification) {

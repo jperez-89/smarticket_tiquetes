@@ -40,7 +40,7 @@
           <!-- VENTAS --------------------------------------- -->
           <li class="treeview">
                <a class="app-menu__item" href="#" data-toggle="treeview">
-                    <i class="app-menu__icon fa fa-users"></i>
+                    <i class="app-menu__icon fas fa-shopping-cart"></i>
                     <span class="app-menu__label">Ventas</span>
                     <i class="treeview-indicator fa fa-angle-right"></i>
                </a>

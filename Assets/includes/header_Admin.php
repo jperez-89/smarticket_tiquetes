@@ -17,9 +17,12 @@
      <!-- Select 2 -->
      <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
+     <!-- Sweet Alert -->
+     <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
      <!-- DataTables CSS -->
      <link rel="stylesheet" type="text/css" href="<?php echo media(); ?>DataTables/datatables.min.css">
-     <link rel="stylesheet" type="text/css" href="<?php echo media(); ?>DataTables/DataTables-1.10.23/css/datatables.bootstrap4.min.css">
+     <link rel="stylesheet" type="text/css" href="<?php echo media(); ?>DataTables/css/datatables.bootstrap5.min.css">
 
      <!-- Main CSS-->
      <link rel="stylesheet" type="text/css" href="<?php echo media(); ?>css/style.css">
