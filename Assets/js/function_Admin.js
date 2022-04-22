@@ -5,24 +5,25 @@ document.addEventListener("DOMContentLoaded", function () {
 window.addEventListener(
   "load",
   function () {
-    getCantProducts();
+    getCantEventos();
     getCantClients();
-    getCantUsers();
+    // getCantUsers();
+    this.FechaActual();
   },
   false
 );
 
-function getCantProducts() {
+function getCantEventos() {
   // Obtener los datos
   var request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
-  var url = base_url + "Productos/getCantProductos";
+  var url = base_url + "Eventos/getCantEventos";
   request.open("GET", url, true);
   request.send();
 
   request.onreadystatechange = function () {
     if (request.readyState == 4 && request.status == 200) {
       var objData = JSON.parse(request.responseText);
-      document.querySelector("#cantProductos").innerHTML = objData[0].Cantidad;
+      document.querySelector("#cantEventos").innerHTML = objData[0].Cantidad;
     }
   };
 }
@@ -55,11 +56,6 @@ function getCantUsers() {
       document.querySelector("#cantUsers").innerHTML = objData[0].Cantidad;
     }
   };
-}
-
-// CARGA LA FUNCION AL INICIAR LA PAGINA
-window.onload = function () {
-  this.FechaActual();
 }
 
 // PONE LA FECHA ACTUAL EN EL CAMPO FECHA

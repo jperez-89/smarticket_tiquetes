@@ -14,6 +14,7 @@
   --purple: #6f42c1;
   --pink: #e83e8c;
   --red: #dc3545;
+  --RedAura: #C9184A;
   --orange: #fd7e14;
   --yellow: #ffc107;
   --green: #28a745;
@@ -36,7 +37,7 @@
   --breakpoint-lg: 992px;
   --breakpoint-xl: 1200px;
   --font-family-sans-serif: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  /* --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; */
 }
 
 *,
@@ -47,7 +48,7 @@
 }
 
 html {
-  font-family: sans-serif;
+  font-family: var(--font-family-sans-serif);
   line-height: 1.15;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -59,9 +60,8 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 body {
   margin: 0;
-  /* font-family: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; */
-  font-family: Nunito,sans-serif;
-  /* font-size: 0.875rem; */
+  font-family: var(--font-family-sans-serif);
+  font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.5;
   text-align: left;
@@ -166,7 +166,7 @@ a {
 }
 
 a:hover {
-  color: var(--cyan);
+  color: var(--RedAura);
   text-decoration: none;
 }
 
@@ -188,7 +188,7 @@ pre,
 code,
 kbd,
 samp {
-  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family: var(--font-family-sans-serif);
   font-size: 1em;
 }
 
@@ -587,8 +587,8 @@ pre code {
 
 .container-fluid {
   width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
+  padding-right: 10px;
+  padding-left: 5px;
   margin-right: auto;
   margin-left: auto;
 }
@@ -2049,7 +2049,7 @@ pre code {
 .form-control:focus {
   color: #495057;
   background-color: #FFF;
-  border-color: #009688;
+  border-color: var(--blue2);
   outline: 0;
   -webkit-box-shadow: none;
           box-shadow: none;
@@ -2620,10 +2620,22 @@ fieldset:disabled a.btn {
   pointer-events: none;
 }
 
-.btn-primary {
+.btn-primary2 {
   color: #FFF;
   background-color: var(--blue-dark);
+  border-color: var(--blue-dark);;
+}
+
+.btn-primary2:hover {
+  color: var(--blue-dark);
+  background-color: #fff;
   border-color: var(--blue-dark);
+}
+
+.btn-primary {
+  color: var(--blue2);
+  background-color: #fff;
+  border-color: var(--blue2);
 }
 
 .btn-primary:hover {
@@ -2729,8 +2741,8 @@ fieldset:disabled a.btn {
 }
 
 .btn-info {
-  color: #FFF;
-  background-color: #17a2b8;
+  color: #17a2b8; 
+  background-color: #FFF;
   border-color: #17a2b8;
 }
 
@@ -2765,13 +2777,13 @@ fieldset:disabled a.btn {
 }
 
 .btn-warning {
-  color: #212529;
-  background-color: #ffc107;
+  color: var(--yellow);
+  background-color: var(--white);
   border-color: #ffc107;
 }
 
 .btn-warning:hover {
-  color: #212529;
+  color: var(--white);
   background-color: #e0a800;
   border-color: #d39e00;
 }
@@ -2782,8 +2794,8 @@ fieldset:disabled a.btn {
 }
 
 .btn-warning.disabled, .btn-warning:disabled {
-  color: #212529;
-  background-color: #ffc107;
+  color: var(--yellow);
+  background-color: var(--white);
   border-color: #ffc107;
 }
 
@@ -2801,15 +2813,27 @@ fieldset:disabled a.btn {
 }
 
 .btn-danger {
-  color: #FFF;
-  background-color: #dc3545;
-  border-color: #dc3545;
+  color: var(--RedAura);
+  background-color: var(--white);
+  border-color: var(--RedAura);
+}
+
+.btn-danger2 {
+  color: var(--white);
+  background-color: var(--RedAura);
+  border-color: var(--RedAura);
+}
+
+.btn-danger2:hover {
+  color: var(--RedAura);
+  background-color:  var(--white);
+  border-color: var(--RedAura);
 }
 
 .btn-danger:hover {
-  color: #FFF;
-  background-color: #c82333;
-  border-color: #bd2130;
+  color:  var(--RedAura);
+  background-color: var(--white);
+  border-color:  var(--RedAura);
 }
 
 .btn-danger:focus, .btn-danger.focus {
@@ -2818,16 +2842,16 @@ fieldset:disabled a.btn {
 }
 
 .btn-danger.disabled, .btn-danger:disabled {
-  color: #FFF;
-  background-color: #dc3545;
-  border-color: #dc3545;
+  color: var(--gray);
+  background-color: var(--white);
+  border-color: var(--gray);
 }
 
 .btn-danger:not(:disabled):not(.disabled):active, .btn-danger:not(:disabled):not(.disabled).active,
 .show > .btn-danger.dropdown-toggle {
   color: #FFF;
-  background-color: #bd2130;
-  border-color: #b21f2d;
+  background-color: var(--RedAura);
+  border-color: var(--RedAura);
 }
 
 .btn-danger:not(:disabled):not(.disabled):active:focus, .btn-danger:not(:disabled):not(.disabled).active:focus,
@@ -14873,7 +14897,7 @@ be a descendant of the grid when it is being dragged.
 .app-content {
   min-height: calc(100vh - 50px);
   margin-top: 50px;
-  padding: 16px;
+  padding: 5px;
   /* background-color: #E5E5E5; */
   background-color: var(--backgroudColor);
   -webkit-transition: margin-left 0.3s ease;
@@ -14883,7 +14907,7 @@ be a descendant of the grid when it is being dragged.
 
 @media (min-width: 768px) {
   .app-content {
-    margin-left: 180px;
+    margin-left: 190px;
   }
 }
 
@@ -15165,35 +15189,17 @@ be a descendant of the grid when it is being dragged.
     bottom: 0;
     position: fixed;
     top: 0;
-    /* padding-top: 80px; */
-    margin-top: 65px;
-    margin-bottom: 15px;
+    margin-top: 60px;
+    margin-bottom: 10px;
     -webkit-box-shadow: 0 0 35px 0 rgba(154,161,171,.15);
     box-shadow: 0 0 35px 0 rgba(154,161,171,.15);
-
     background-color: #fff;
     width: 180px;
-
     -webkit-box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.2);
      box-shadow: 0px 8px 17px rgba(0, 0, 0, 0.2);
     -webkit-transition: left 0.3s ease, width 0.3s ease;
     -o-transition: left 0.3s ease, width 0.3s ease;
     transition: left 0.3s ease, width 0.3s ease; 
-
-
-    /* 
-    background: #fff!important;
-    min-width: 260px;
-    max-width: 260px;
-    -webkit-box-shadow: 0 0 35px 0 rgba(154,161,171,.15);
-    box-shadow: 0 0 35px 0 rgba(154,161,171,.15);
-    padding-top: 0!important;
-    z-index: 1001!important;
-    left: 0;
-    overflow: auto;
-  color: #3d73dd;
-  
-  */
 }
 
 .app-sidebar::-webkit-scrollbar {
@@ -15277,12 +15283,13 @@ be a descendant of the grid when it is being dragged.
   background-color 0.3s ease;
   transition: border-left-color 0.3s ease,
   background-color 0.3s ease;
-  color: var(--secondary);
+  color: var(--gray);
 }
 
 .app-menu__item.active, .app-menu__item:hover, .app-menu__item:focus {
   text-decoration: none;
-  color: var(--cyan);
+  color: var(--white);
+  background-color: var(--blue-dark);
 }
 
 .app-menu__icon {
@@ -15300,9 +15307,7 @@ be a descendant of the grid when it is being dragged.
 }
 
 .treeview.is-expanded [data-toggle='treeview'] {
-  border-left-color: var(--cyan);
-  /* background: #fff!important; */
-  color: var(--cyan);
+  color: var(--white);
 }
 
 .treeview.is-expanded .treeview-menu {
@@ -15321,7 +15326,7 @@ be a descendant of the grid when it is being dragged.
   -webkit-transition: max-height 0.3s ease;
   -o-transition: max-height 0.3s ease;
   transition: max-height 0.3s ease;
-  background: var(--white)!important;
+  background: var(--white);
 }
 
 .treeview-item {
@@ -15337,7 +15342,6 @@ be a descendant of the grid when it is being dragged.
 }
 
 .treeview-item.active, .treeview-item:hover, .treeview-item:focus {
-  background: var(--white)!important;
   text-decoration: none;
 }
 
@@ -15399,15 +15403,14 @@ be a descendant of the grid when it is being dragged.
     margin-left: -3px;
     line-height: 1;
     opacity: 0;
-    background: var(--cyan);
+    background: var(--blue-dark);
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
   }
   .sidebar-mini.sidenav-toggled .treeview:hover .app-menu__item {
     overflow: visible;
-    background: var(--cyan);
-    border-left-color: var(--cyan);
-    /* border-left-color: #009688; */
+    background: var(--blue-dark);
+    border-left-color: var(--blue-dark);
     color: var(--white);
   }
   .sidebar-mini.sidenav-toggled .treeview:hover .app-menu__label {
@@ -15417,7 +15420,7 @@ be a descendant of the grid when it is being dragged.
     max-height: 100vh;
     opacity: 1;
     visibility: visible;
-    z-index: 10;
+    z-index: 100;
   }
   .sidebar-mini.sidenav-toggled .treeview .app-menu__label {
     border-bottom-right-radius: 0;
@@ -15491,8 +15494,6 @@ be a descendant of the grid when it is being dragged.
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  /* background-color: #FFF; */
-  /* margin: -20px -10px 10px; */
   margin-bottom: 5px;
   padding: 12px 10px;
   /* border-radius: 5px; */
@@ -15924,7 +15925,7 @@ be a descendant of the grid when it is being dragged.
 }
 
 .material-half-bg .cover {
-  background-color: #009688;
+  background-color: #112d49;
   height: 50vh;
 }
 
@@ -16408,7 +16409,7 @@ be a descendant of the grid when it is being dragged.
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  min-height: 100vh;
+  min-height: 80vh;
 }
 
 .login-content .logo {

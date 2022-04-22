@@ -6,7 +6,7 @@
      <meta http-equiv="X-UA-Compatible" content="IE=edge">
      <meta name="viewport" content="width=device-width, initial-scale=1">
      <meta name="author" content="Jairo RPR">
-     <meta name="theme-color" content="#009688">
+     <meta name="theme-color" content="#112d49">
      <link rel="shortcut icon" href="<?= media(); ?>images/favicon2.ico" type="image/x-icon">
      <title><?php echo $data["page_title"] ?></title>
      <!-- Main CSS-->
@@ -24,38 +24,38 @@
           </div>
           <div class="login-box">
                <form id="frmLogin" name="frmLogin" class="login-form" action="">
-                    <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i> SIGN IN</h3>
+                    <h3 class="login-head"><i class="fa fa-lg fa-fw fa-user"></i> INICIAR SESIÓN</h3>
                     <div class="form-group">
-                         <label for="txtUsername" class="control-label">USERNAME</label>
-                         <input class="form-control" id="txtUsername" name="txtUsername" type="email" placeholder="Email">
+                         <label for="txtUsername" class="control-label">USUARIO</label>
+                         <input class="form-control" id="txtUsername" name="txtUsername" type="email" placeholder="Correo electrónico">
                     </div>
                     <div class="form-group">
-                         <label for="txtPassword" class="control-label">PASSWORD</label>
-                         <input class="form-control" id="txtPassword" name="txtPassword" type="password" placeholder="Password">
+                         <label for="txtPassword" class="control-label">CONTRASEÑA</label>
+                         <input class="form-control" id="txtPassword" name="txtPassword" type="password" placeholder="Contraseña">
                     </div>
                     <div class="form-group">
                          <div class="utility">
-                              <p class="semibold-text mb-2"><a href="#" data-toggle="flip">Forgot Password ?</a></p>
+                              <p class="semibold-text mb-2"><a href="#" data-toggle="flip">Olvidó su contraseña?</a></p>
                          </div>
                     </div>
                     <div id="alertLogin" class="text-center"></div>
                     <div class="form-group btn-container">
-                         <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-sign-in fa-lg fa-fw"></i>SIGN IN</button>
+                         <button type="submit" class="btn btn-primary2 btn-block"><i class="fa fa-sign-in fa-lg fa-fw"></i>Iniciar sesión</button>
                     </div>
                </form>
 
                <!-- FORM DE RESET PASSWORD -->
                <form class="forget-form" action="#">
-                    <h3 class="login-head"><i class="fa fa-lg fa-fw fa-lock"></i>Forgot Password ?</h3>
+                    <h3 class="login-head"><i class="fa fa-lg fa-fw fa-lock"></i>Olvidó su contraseña?</h3>
                     <div class="form-group">
                          <label for="txtEmailReset" class="control-label">EMAIL</label>
-                         <input id="txtEmailReset" name="txtEmailReset" class="form-control" type="email" placeholder="Email">
+                         <input id="txtEmailReset" name="txtEmailReset" class="form-control" type="email" placeholder="Correo electrónico">
                     </div>
                     <div class="form-group btn-container">
-                         <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-unlock fa-lg fa-fw"></i>RESET</button>
+                         <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-unlock fa-lg fa-fw"></i>RESETEAR</button>
                     </div>
                     <div class="form-group mt-3">
-                         <p class="semibold-text mb-0"><a href="#" data-toggle="flip"><i class="fa fa-angle-left fa-fw"></i> Back to Login</a></p>
+                         <p class="semibold-text mb-0"><a href="#" data-toggle="flip"><i class="fa fa-angle-left fa-fw"></i> INICIAR SESIÓN</a></p>
                     </div>
                </form>
           </div>

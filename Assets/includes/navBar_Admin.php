@@ -18,47 +18,71 @@
           <li>
                <a class="app-menu__item" href="<?= base_url() ?>">
                     <i class="app-menu__icon fa fa-dashboard"></i>
-                    <span class="app-menu__label">Dashboard</span>
+                    <span class="app-menu__label">Panel de Control</span>
                </a>
           </li>
           <!-- CLIENTES --------------------------------------- -->
           <li>
                <a class="app-menu__item" href="<?= base_url() ?>clientes">
-                    <i class="app-menu__icon fas fa-people-arrows"></i>
+                    <i class="app-menu__icon fas fa-user-friends"></i>
                     <span class="app-menu__label">Clientes</span>
-               </a>
-          </li>
-
-          <!-- PRODUCTOS --------------------------------------- -->
-          <li>
-               <a class="app-menu__item" href="<?= base_url() ?>productos">
-                    <i class="app-menu__icon fa fa-archive"></i>
-                    <span class="app-menu__label">Productos</span>
                </a>
           </li>
 
           <!-- VENTAS --------------------------------------- -->
           <li class="treeview">
                <a class="app-menu__item" href="#" data-toggle="treeview">
-                    <i class="app-menu__icon fa fa-users"></i>
+                    <i class="app-menu__icon fas fa-shopping-cart"></i>
                     <span class="app-menu__label">Ventas</span>
                     <i class="treeview-indicator fa fa-angle-right"></i>
                </a>
                <ul class="treeview-menu">
                     <li>
-                         <a class="treeview-item" href="<?= base_url() ?>facturacion/nueva_factura" rel="noopener">
-                              <i class="icon fa fa-circle-o"></i>Nueva Venta
+                         <a class="treeview-item" href="<?= base_url() ?>ventas/reserva_entradas" rel="noopener">
+                              <i class="icon fa fa-circle-o"></i>Reserva Entradas
+                         </a>
+                    </li>
+               </ul>
+          </li>
+
+          <!-- EVENTOS --------------------------------------- -->
+          <li>
+               <a class="app-menu__item" href="<?= base_url() ?>eventos">
+                    <i class="app-menu__icon fas fa-music""></i>
+                    <span class=" app-menu__label">Eventos</span>
+               </a>
+          </li>
+
+          <!-- ENTRADAS --------------------------------------- -->
+          <li class="treeview">
+               <a class="app-menu__item" href="#" data-toggle="treeview">
+                    <i class="app-menu__icon fa fa-ticket"></i>
+                    <span class="app-menu__label">Entradas</span>
+                    <i class="treeview-indicator fa fa-angle-right"></i>
+               </a>
+               <ul class="treeview-menu">
+                    <li>
+                         <a class="treeview-item" href="<?= base_url() ?>entradas/tipo_entradas" rel="noopener">
+                              <i class="icon fa fa-circle-o"></i>Tipo de Entradas
                          </a>
                     </li>
                     <li>
-                         <a class="treeview-item" href="<?= base_url() ?>facturacion/facturas"><i class="icon fa fa-circle-o"></i>Facturas</a>
+                         <a class="treeview-item" href="<?= base_url() ?>entradas/agregar_entradas"><i class="icon fa fa-circle-o"></i>Agregar Entradas</a>
                     </li>
 
                </ul>
           </li>
 
+          <!-- EVENTOS --------------------------------------- -->
+          <li>
+               <a class="app-menu__item" href="<?= base_url() ?>">
+                    <i class="app-menu__icon fas fa-network-wired"></i>
+                    <span class="app-menu__label">Conexión</span>
+               </a>
+          </li>
+
           <!-- USUARIOS --------------------------------------- -->
-          <li class="treeview">
+          <!-- <li class="treeview">
                <a class="app-menu__item" href="#" data-toggle="treeview">
                     <i class="app-menu__icon fa fa-users"></i>
                     <span class="app-menu__label">Usuarios</span>
@@ -74,6 +98,6 @@
                          </a>
                     </li>
                </ul>
-          </li>
+          </li> -->
      </ul>
 </aside>

@@ -77,8 +77,6 @@ class Crud extends Conexion
      {
           $this->stringQuery = $query;
           $this->arrValues = $arrValues;
-          // PrintData('CRUD..array.');
-          // PrintArray($this->arrValues);
 
           $update = $this->cone->prepare($this->stringQuery);
           $result = $update->execute($this->arrValues);

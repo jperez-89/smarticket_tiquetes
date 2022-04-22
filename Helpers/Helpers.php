@@ -103,10 +103,3 @@ function Token()
      $token = $r1 . '-' . $r2 . '-' . $r3 . '-' . $r4;
      return $token;
 }
-
-// formatear cantidades
-function formatMoney($cantidad)
-{
-     $cantidad = number_format($cantidad, 2, deci, millar);
-     return $cantidad;
-}

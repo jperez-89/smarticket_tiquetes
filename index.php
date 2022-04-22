@@ -15,6 +15,9 @@ $controller = $arrUrl[0];
 $method = $arrUrl[0];
 $params = "";
 
+// PrintData('INDEX...' . $controller);
+// print_r($arrUrl);
+
 // Obtenemos el nombre del metodo solicitado por el usuario
 if (!empty($arrUrl[1])) {
      if ($arrUrl[1] != "") {
